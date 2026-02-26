@@ -1,0 +1,55 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-26T14:45:59.685Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 2,
+    "implemented": 2,
+    "items": [
+      {
+        "id": "REQ-12",
+        "summary": "Create a login page component (frontend/src/components/Login.tsx) that renders a centered card with a username field and a password field. On submission, validate that the entered credentials match the hardcoded values (username: 'vsat', password: '0558'). If credentials are correct, mark the session as authenticated (e.g., via React state or sessionStorage) and redirect to the main app. If incorrect, display a clear error message such as 'Invalid username or password'.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/Login.tsx",
+          "frontend/src/hooks/useAuth.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/Login.tsx",
+          "frontend/src/hooks/useAuth.ts"
+        ]
+      },
+      {
+        "id": "REQ-13",
+        "summary": "Update the root App.tsx to conditionally render the Login component when the user is not authenticated, and render the full trip management app (Header, Dashboard, TripForm, TripTable, DailyReport, Footer) only when the user is authenticated. Authentication state must be managed at the App level and passed down or stored in sessionStorage so it persists across page refreshes within the same browser session.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/Header.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/Header.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/Login.tsx",
+    "frontend/src/hooks/useAuth.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

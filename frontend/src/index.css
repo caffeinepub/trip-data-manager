@@ -1,0 +1,408 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* Warm amber/brown professional palette */
+    --background: 0.98 0.005 80;
+    --foreground: 0.18 0.02 60;
+
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.02 60;
+
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.02 60;
+
+    --primary: 0.52 0.14 50;
+    --primary-foreground: 0.99 0 0;
+
+    --secondary: 0.95 0.015 80;
+    --secondary-foreground: 0.25 0.03 55;
+
+    --muted: 0.94 0.01 80;
+    --muted-foreground: 0.52 0.02 60;
+
+    --accent: 0.92 0.04 80;
+    --accent-foreground: 0.25 0.05 55;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    --border: 0.88 0.015 75;
+    --input: 0.88 0.015 75;
+    --ring: 0.52 0.14 50;
+
+    /* Chart colors - warm palette */
+    --chart-1: 0.65 0.18 50;
+    --chart-2: 0.72 0.15 65;
+    --chart-3: 0.55 0.12 40;
+    --chart-4: 0.78 0.12 80;
+    --chart-5: 0.45 0.16 35;
+
+    /* Surface */
+    --surface: 0.97 0.008 78;
+  }
+
+  .dark {
+    --background: 0.14 0.015 55;
+    --foreground: 0.95 0.01 80;
+
+    --card: 0.18 0.015 55;
+    --card-foreground: 0.95 0.01 80;
+
+    --popover: 0.22 0.015 55;
+    --popover-foreground: 0.95 0.01 80;
+
+    --primary: 0.72 0.14 55;
+    --primary-foreground: 0.12 0.01 55;
+
+    --secondary: 0.24 0.015 55;
+    --secondary-foreground: 0.92 0.01 80;
+
+    --muted: 0.24 0.015 55;
+    --muted-foreground: 0.62 0.02 70;
+
+    --accent: 0.28 0.02 55;
+    --accent-foreground: 0.92 0.01 80;
+
+    --destructive: 0.704 0.191 22.216;
+    --destructive-foreground: 0.205 0 0;
+
+    --border: 1 0 0 / 12%;
+    --input: 1 0 0 / 15%;
+    --ring: 0.62 0.14 55;
+
+    --chart-1: 0.72 0.18 55;
+    --chart-2: 0.65 0.15 70;
+    --chart-3: 0.58 0.12 45;
+    --chart-4: 0.78 0.12 85;
+    --chart-5: 0.50 0.16 40;
+
+    --surface: 0.16 0.012 55;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* ── Surface ── */
+  .bg-surface {
+    background-color: oklch(var(--surface));
+  }
+
+  /* ── Header ── */
+  .app-header {
+    @apply sticky top-0 z-50 border-b border-border;
+    background: oklch(1 0 0 / 0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .header-logo {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center;
+    background: linear-gradient(135deg, oklch(0.65 0.18 50), oklch(0.52 0.14 40));
+    box-shadow: 0 2px 8px oklch(0.52 0.14 50 / 0.3);
+  }
+
+  .header-title {
+    @apply text-lg font-bold leading-tight;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: oklch(0.22 0.04 55);
+  }
+
+  .header-subtitle {
+    @apply text-xs leading-tight;
+    color: oklch(0.55 0.02 60);
+  }
+
+  .nav-link {
+    @apply font-medium transition-colors;
+    color: oklch(0.45 0.03 60);
+  }
+
+  .nav-link:hover {
+    color: oklch(0.52 0.14 50);
+  }
+
+  /* ── Footer ── */
+  .app-footer {
+    @apply border-t border-border mt-8;
+    background: oklch(0.97 0.005 78);
+  }
+
+  /* ── Section Headers ── */
+  .section-header {
+    @apply mb-4;
+  }
+
+  .section-title {
+    @apply text-xl font-bold;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: oklch(0.22 0.04 55);
+  }
+
+  .section-subtitle {
+    @apply text-sm mt-0.5;
+    color: oklch(0.55 0.02 60);
+  }
+
+  /* ── Form Card ── */
+  .form-card {
+    @apply border border-border shadow-sm;
+    background: oklch(1 0 0);
+  }
+
+  .form-field {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .form-label {
+    @apply text-sm font-medium;
+    color: oklch(0.28 0.03 58);
+  }
+
+  .form-input {
+    @apply h-10 text-sm;
+  }
+
+  .form-error {
+    @apply text-xs font-medium;
+    color: oklch(var(--destructive));
+  }
+
+  .total-display {
+    @apply h-10 px-3 rounded-md border flex items-center justify-between;
+    background: oklch(0.96 0.03 75);
+    border-color: oklch(0.82 0.06 70);
+  }
+
+  .total-value {
+    @apply text-sm font-bold;
+    color: oklch(0.42 0.14 50);
+  }
+
+  .total-hint {
+    @apply text-xs;
+    color: oklch(0.58 0.04 65);
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    background: linear-gradient(135deg, oklch(0.58 0.16 50), oklch(0.48 0.14 42));
+    @apply text-white font-semibold shadow-sm hover:opacity-90 transition-opacity;
+  }
+
+  .btn-cancel {
+    @apply font-medium;
+  }
+
+  .btn-filter {
+    @apply text-xs font-medium;
+  }
+
+  .btn-filter-active {
+    background: oklch(0.52 0.14 50);
+    @apply text-white text-xs font-medium;
+  }
+
+  .btn-export-excel {
+    @apply text-sm font-medium border-border;
+    color: oklch(0.38 0.12 145);
+    border-color: oklch(0.75 0.1 145);
+  }
+
+  .btn-export-excel:hover {
+    background: oklch(0.96 0.04 145);
+  }
+
+  .btn-export-pdf {
+    @apply text-sm font-medium;
+    color: oklch(0.42 0.14 25);
+    border-color: oklch(0.72 0.12 25);
+  }
+
+  .btn-export-pdf:hover {
+    background: oklch(0.97 0.03 25);
+  }
+
+  /* ── Dashboard ── */
+  .filter-card {
+    @apply border border-border shadow-xs;
+    background: oklch(1 0 0);
+  }
+
+  .stat-card {
+    @apply border shadow-xs transition-transform hover:-translate-y-0.5;
+  }
+
+  .stat-card-amber {
+    background: linear-gradient(135deg, oklch(0.97 0.04 80), oklch(0.94 0.06 75));
+    border-color: oklch(0.85 0.08 75);
+  }
+
+  .stat-card-green {
+    background: linear-gradient(135deg, oklch(0.97 0.04 145), oklch(0.94 0.06 140));
+    border-color: oklch(0.82 0.08 140);
+  }
+
+  .stat-card-orange {
+    background: linear-gradient(135deg, oklch(0.97 0.04 60), oklch(0.94 0.06 55));
+    border-color: oklch(0.84 0.08 58);
+  }
+
+  .stat-card-red {
+    background: linear-gradient(135deg, oklch(0.96 0.05 40), oklch(0.93 0.07 35));
+    border-color: oklch(0.82 0.1 38);
+  }
+
+  .stat-card-highlight {
+    box-shadow: 0 2px 12px oklch(0.52 0.14 40 / 0.15);
+  }
+
+  .stat-label {
+    @apply text-xs font-medium uppercase tracking-wide mt-1;
+    color: oklch(0.45 0.04 58);
+  }
+
+  .stat-value {
+    @apply text-xl font-bold mt-0.5;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: oklch(0.22 0.05 55);
+  }
+
+  /* ── Chart ── */
+  .chart-card {
+    @apply border border-border shadow-xs;
+    background: oklch(1 0 0);
+  }
+
+  .chart-tooltip {
+    @apply rounded-lg border border-border p-3 shadow-lg text-sm;
+    background: oklch(1 0 0);
+    min-width: 160px;
+  }
+
+  .chart-tooltip-date {
+    @apply font-semibold mb-2 pb-1 border-b border-border text-xs;
+    color: oklch(0.35 0.03 58);
+  }
+
+  .chart-tooltip-row {
+    @apply flex justify-between gap-4 text-xs py-0.5;
+  }
+
+  /* ── Table ── */
+  .table-card {
+    @apply border border-border shadow-xs overflow-hidden;
+    background: oklch(1 0 0);
+  }
+
+  .table-header-row {
+    background: oklch(0.94 0.03 72);
+  }
+
+  .table-head {
+    @apply text-xs font-semibold uppercase tracking-wide py-3;
+    color: oklch(0.38 0.04 58);
+  }
+
+  .table-row {
+    @apply transition-colors;
+  }
+
+  .table-row:hover {
+    background: oklch(0.97 0.02 78) !important;
+  }
+
+  .table-row-even {
+    background: oklch(1 0 0);
+  }
+
+  .table-row-odd {
+    background: oklch(0.985 0.005 78);
+  }
+
+  .table-cell {
+    @apply text-sm py-3;
+  }
+
+  .order-id-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold;
+    background: oklch(0.94 0.04 72);
+    color: oklch(0.38 0.1 55);
+    border: 1px solid oklch(0.85 0.06 70);
+  }
+
+  .total-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-bold;
+    background: oklch(0.93 0.06 50);
+    color: oklch(0.38 0.14 48);
+    border: 1px solid oklch(0.82 0.1 52);
+  }
+
+  .action-btn-edit {
+    color: oklch(0.42 0.1 220);
+    border-color: oklch(0.78 0.08 220);
+  }
+
+  .action-btn-edit:hover {
+    background: oklch(0.95 0.04 220);
+  }
+
+  .action-btn-delete {
+    color: oklch(var(--destructive));
+    border-color: oklch(0.78 0.1 27);
+  }
+
+  .action-btn-delete:hover {
+    background: oklch(0.97 0.03 27);
+  }
+
+  /* ── Report ── */
+  .report-card {
+    @apply border border-border shadow-xs;
+    background: oklch(1 0 0);
+  }
+
+  .report-summary-header {
+    @apply flex items-center gap-2 pb-2 border-b border-border;
+  }
+
+  .report-stat-card {
+    @apply flex flex-col items-center justify-center p-3 rounded-lg border text-center gap-1;
+    background: oklch(0.96 0.02 78);
+    border-color: oklch(0.88 0.02 75);
+  }
+
+  .report-stat-highlight {
+    background: linear-gradient(135deg, oklch(0.94 0.06 50), oklch(0.91 0.08 45));
+    border-color: oklch(0.82 0.1 50);
+  }
+
+  .report-stat-label {
+    @apply text-xs font-medium;
+    color: oklch(0.48 0.03 60);
+  }
+
+  .report-stat-value {
+    @apply text-base font-bold;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: oklch(0.22 0.05 55);
+  }
+}

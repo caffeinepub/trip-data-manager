@@ -1,0 +1,25 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-26T14:45:59.681Z",
+  "summary": "Both REQ-12 and REQ-13 are well-implemented. Login.tsx provides a centered card with username/password fields, error display, and masked password input. useAuth.ts manages sessionStorage-based authentication with hardcoded credentials. App.tsx conditionally renders Login or the full app. Header.tsx exposes a logout button. All major acceptance criteria are satisfied.",
+  "missing_requirements": [],
+  "hallucinated_features": [
+    {
+      "description": "Duplicate Toaster component rendered in App.tsx — one inside the authenticated branch and one outside it at the bottom of ThemeProvider.",
+      "reason": "The diff shows two Toaster components in App.tsx. This was not requested and causes a redundant duplicate toast provider.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.92,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/App.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/Login.tsx",
+    "frontend/src/hooks/useAuth.ts",
+    "project_state.json"
+  ]
+}

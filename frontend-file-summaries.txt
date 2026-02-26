@@ -1,0 +1,12 @@
+{
+  "frontend/src/types/trip.ts": "TypeScript type definitions for TripRecord, TripFormValues, TripFormErrors, and DashboardStats — now includes `from` and `to` string fields in all three form/record types.",
+  "frontend/src/hooks/useTripData.ts": "localStorage persistence hook for trip records with add/update/delete operations; now defaults missing `from`/`to` fields to empty strings for backward compatibility with existing records.",
+  "frontend/src/hooks/useTripForm.ts": "Form state management hook with validation, edit-mode population, and submit handling; now includes `from`/`to` fields in defaultValues, edit population, validation (required), and TripRecord construction.",
+  "frontend/src/components/TripForm.tsx": "Trip entry/edit form component with a responsive grid layout; now includes \"From\" (origin) and \"To\" (destination) required text input fields with validation error display, positioned between Order ID and Amount fields.",
+  "frontend/src/components/TripTable.tsx": "Searchable, sortable trip records table with edit/delete actions; now includes \"From\" and \"To\" columns between Order ID and Extra Charge, with search also filtering by from/to values.",
+  "frontend/src/utils/exportUtils.ts": "CSV and PDF export utilities for trip reports; both exports now include \"From\" and \"To\" columns in the trip detail table rows, with the summary section unchanged.",
+  "frontend/src/hooks/useAuth.ts": "Custom React hook managing session-based authentication state using sessionStorage, with login (validates hardcoded credentials: username 'vsat', password '0558') and logout functions.",
+  "frontend/src/components/Login.tsx": "Centered login card component with username and password fields, credential validation via callback, inline error display for invalid credentials, and a loading spinner during submission.",
+  "frontend/src/App.tsx": "Main app component that conditionally renders the Login page for unauthenticated users or the full trip management interface (Header, Dashboard, TripForm, TripTable, DailyReport, Footer) for authenticated users.",
+  "frontend/src/components/Header.tsx": "App header with logo, navigation links, and an optional logout button in the top-right corner that triggers the provided onLogout callback."
+}

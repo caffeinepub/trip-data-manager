@@ -1,0 +1,54 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Add login page with hardcoded credentials",
+  "requirements": [
+    {
+      "id": "REQ-12",
+      "summary": "Create a login page component with hardcoded credential validation (username: 'vsat', password: '0558'), session-based authentication state, and error handling for invalid credentials",
+      "acceptanceCriteria": [
+        "A login page is shown when the user is not authenticated, blocking access to the main app.",
+        "The login form has a username input and a password input.",
+        "Submitting with username 'vsat' and password '0558' authenticates the user and shows the main app.",
+        "Submitting with any other credentials displays a visible error message.",
+        "The password field masks input (type='password').",
+        "After successful login, refreshing the page keeps the user logged in for the session (sessionStorage or equivalent).",
+        "A logout button or mechanism is available to return to the login page."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Login.tsx",
+          "operation": "create",
+          "description": "Create a centered login card component with username and password fields. Validate credentials against hardcoded values (username: 'vsat', password: '0558'). On successful validation, set 'isAuthenticated' in sessionStorage and call an onLoginSuccess callback. Display 'Invalid username or password' error message for incorrect credentials. Use shadcn/ui Card, Input, and Button components for consistent styling with the existing app."
+        },
+        {
+          "path": "frontend/src/hooks/useAuth.ts",
+          "operation": "create",
+          "description": "Create a custom React hook to manage authentication state using sessionStorage. Provide login, logout, and isAuthenticated functions. The login function sets 'isAuthenticated' to 'true' in sessionStorage. The logout function removes the sessionStorage key. Initialize authentication state from sessionStorage on mount to persist login across page refreshes within the same session."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Update App.tsx to conditionally render Login component for unauthenticated users and the full trip management interface for authenticated users, with logout functionality",
+      "acceptanceCriteria": [
+        "Unauthenticated users see only the login page; no trip data or navigation is visible.",
+        "Authenticated users see the full app immediately without being redirected to login.",
+        "Closing and reopening the browser tab within the same session keeps the user logged in.",
+        "Opening a new browser session (new tab after clearing session) requires re-login."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Import and use the useAuth hook to check authentication state. Conditionally render the Login component when the user is not authenticated. When authenticated, render the existing app structure (Header, Dashboard, TripForm, TripTable, DailyReport, Footer). Pass the login callback from useAuth to the Login component. Ensure all existing trip management functionality remains intact for authenticated users."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Add a logout button to the Header component that calls the logout function from useAuth and clears the session. Position the logout button in the top-right corner of the header. Style it consistently with the existing navigation links using the same color tokens and hover states."
+        }
+      ]
+    }
+  ]
+}

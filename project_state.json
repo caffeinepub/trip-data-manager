@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 7,
+  "summary": "Trip Data Entry & Management App with form, local storage, dashboard, daily/monthly reports, Excel/PDF export, Indian currency format (₹), and a login page (username: vsat, password: 0558).",
+  "architectural_notes": [
+    "All trip data stored in browser Local Storage; no backend required.",
+    "Total field = Amount + Extra Charge, calculated client-side instantly on input.",
+    "Indian currency format: ₹ #,##,##0 (e.g., ₹1,00,000).",
+    "Export requires third-party libraries: SheetJS for Excel, jsPDF for PDF.",
+    "Login page uses hardcoded credentials (username: vsat, password: 0558); session stored client-side (e.g., sessionStorage)."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-trip-data-entry-form-with-the-following-fields-date-date-picker-order-id-text-unique-required-extra-charge-numeric-default-0-remarks-text-optional-amount-numeric-required-and-total-read-only-auto-calculated-as-amount-extra-charge-the-total-field-must-update-instantly-as-amount-or-extra-charge-values-change",
+      "title": "Create a Trip Data Entry Form with the following fields: Date (date picker), Order ID (text, unique, required), Extra Charge (numeric, default 0), Remarks (text, optional), Amount (numeric, required), and Total (read-only, auto-calculated as Amount + Extra Charge). The Total field must update instantly as Amount or Extra Charge values change.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-form-validation-rules-order-id-must-be-unique-across-all-stored-records-amount-is-required-and-must-be-numeric-extra-charge-must-be-numeric-date-and-order-id-fields-must-not-be-empty-remarks-is-optional-display-clear-field-level-error-messages-for-each-violated-rule",
+      "title": "Implement form validation rules: Order ID must be unique across all stored records; Amount is required and must be numeric; Extra Charge must be numeric; Date and Order ID fields must not be empty; Remarks is optional. Display clear, field-level error messages for each violated rule.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-store-all-trip-records-in-browser-local-storage-on-page-load-automatically-read-and-display-all-previously-saved-records-support-add-edit-and-delete-operations-add-saves-a-new-record-edit-populates-the-form-with-the-selected-record-s-data-for-modification-delete-removes-the-record-after-confirmation-prevent-duplicate-order-ids-on-both-add-and-edit",
+      "title": "Store all trip records in browser Local Storage. On page load, automatically read and display all previously saved records. Support Add, Edit, and Delete operations: Add saves a new record, Edit populates the form with the selected record's data for modification, Delete removes the record after confirmation. Prevent duplicate Order IDs on both Add and Edit.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-all-trip-records-in-a-data-table-below-the-form-with-the-following-columns-date-order-id-extra-charge-remarks-amount-total-and-actions-edit-delete-buttons-all-currency-values-amount-extra-charge-total-must-be-formatted-using-the-indian-currency-format-0",
+      "title": "Display all trip records in a data table below the form with the following columns: Date, Order ID, Extra Charge, Remarks, Amount, Total, and Actions (Edit / Delete buttons). All currency values (Amount, Extra Charge, Total) must be formatted using the Indian currency format ₹ #,##,##0.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-summary-dashboard-section-above-the-table-displaying-total-trips-count-total-amount-total-extra-charges-and-overall-grand-total-as-stat-cards-include-a-daily-date-filter-and-a-monthly-period-selector-that-filter-the-dashboard-stats-add-a-bar-or-line-chart-showing-the-trip-cost-trend-over-time-for-the-selected-filter-period-all-monetary-values-must-use-indian-currency-format-0-the-dashboard-must-update-automatically-whenever-trip-data-changes",
+      "title": "Create a summary dashboard section above the table displaying: Total Trips (count), Total Amount, Total Extra Charges, and Overall Grand Total as stat cards. Include a daily date filter and a monthly period selector that filter the dashboard stats. Add a bar or line chart showing the trip cost trend over time for the selected filter period. All monetary values must use Indian currency format ₹ #,##,##0. The dashboard must update automatically whenever trip data changes.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-end-of-day-report-section-with-a-generate-daily-report-button-the-user-selects-a-date-the-report-filters-records-for-that-date-and-displays-number-of-trips-total-amount-total-extra-charges-and-grand-total-provide-two-export-buttons-download-excel-xlsx-and-download-pdf-each-generating-a-file-containing-the-filtered-report-data",
+      "title": "Add an End of Day Report section with a 'Generate Daily Report' button. The user selects a date; the report filters records for that date and displays: Number of Trips, Total Amount, Total Extra Charges, and Grand Total. Provide two export buttons: 'Download Excel (.xlsx)' and 'Download PDF', each generating a file containing the filtered report data.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-clean-professional-visual-theme-use-a-neutral-modern-color-palette-avoiding-blue-purple-clear-typographic-hierarchy-card-based-layout-for-dashboard-metrics-distinct-section-separation-with-headings-and-fully-responsive-design-that-works-on-mobile-and-desktop",
+      "title": "Apply a clean, professional visual theme: use a neutral, modern color palette (avoiding blue/purple), clear typographic hierarchy, card-based layout for dashboard metrics, distinct section separation with headings, and fully responsive design that works on mobile and desktop.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-two-new-text-fields-from-origin-location-and-to-destination-location-to-the-trip-data-entry-form-both-fields-should-be-required-displayed-between-the-date-order-id-fields-and-the-amount-extra-charge-fields-and-validated-so-neither-can-be-empty-on-form-submission-display-clear-field-level-error-messages-when-either-field-is-left-blank",
+      "title": "Add two new text fields, 'From' (origin location) and 'To' (destination location), to the trip data entry form. Both fields should be required, displayed between the Date/Order ID fields and the Amount/Extra Charge fields, and validated so neither can be empty on form submission. Display clear field-level error messages when either field is left blank.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-extend-the-triprecord-type-and-all-related-typescript-types-tripformvalues-tripformerrors-in-frontend-src-types-trip-ts-to-include-from-and-to-string-fields-update-the-usetripdata-and-usetripform-hooks-to-persist-read-and-validate-these-new-fields-in-localstorage-ensure-existing-records-without-these-fields-load-gracefully-defaulting-to-empty-string",
+      "title": "Extend the TripRecord type and all related TypeScript types (TripFormValues, TripFormErrors) in frontend/src/types/trip.ts to include 'from' and 'to' string fields. Update the useTripData and useTripForm hooks to persist, read, and validate these new fields in localStorage. Ensure existing records without these fields load gracefully (defaulting to empty string).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-from-and-to-columns-to-the-trip-records-data-table-in-triptable-tsx-displaying-these-values-for-each-record-update-the-column-layout-to-accommodate-the-two-new-columns-while-remaining-readable-on-desktop-and-mobile-e-g-horizontal-scroll-on-small-screens",
+      "title": "Add 'From' and 'To' columns to the trip records data table in TripTable.tsx, displaying these values for each record. Update the column layout to accommodate the two new columns while remaining readable on desktop and mobile (e.g., horizontal scroll on small screens).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-excel-and-pdf-export-utilities-in-frontend-src-utils-exportutils-ts-to-include-from-and-to-fields-in-the-exported-report-data-for-both-the-daily-report-and-any-other-export-functions",
+      "title": "Update the Excel and PDF export utilities in frontend/src/utils/exportUtils.ts to include 'From' and 'To' fields in the exported report data for both the daily report and any other export functions.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-login-page-component-frontend-src-components-login-tsx-that-renders-a-centered-card-with-a-username-field-and-a-password-field-on-submission-validate-that-the-entered-credentials-match-the-hardcoded-values-username-vsat-password-0558-if-credentials-are-correct-mark-the-session-as-authenticated-e-g-via-react-state-or-sessionstorage-and-redirect-to-the-main-app-if-incorrect-display-a-clear-error-message-such-as-invalid-username-or-password",
+      "title": "Create a login page component (frontend/src/components/Login.tsx) that renders a centered card with a username field and a password field. On submission, validate that the entered credentials match the hardcoded values (username: 'vsat', password: '0558'). If credentials are correct, mark the session as authenticated (e.g., via React state or sessionStorage) and redirect to the main app. If incorrect, display a clear error message such as 'Invalid username or password'.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-root-app-tsx-to-conditionally-render-the-login-component-when-the-user-is-not-authenticated-and-render-the-full-trip-management-app-header-dashboard-tripform-triptable-dailyreport-footer-only-when-the-user-is-authenticated-authentication-state-must-be-managed-at-the-app-level-and-passed-down-or-stored-in-sessionstorage-so-it-persists-across-page-refreshes-within-the-same-browser-session",
+      "title": "Update the root App.tsx to conditionally render the Login component when the user is not authenticated, and render the full trip management app (Header, Dashboard, TripForm, TripTable, DailyReport, Footer) only when the user is authenticated. Authentication state must be managed at the App level and passed down or stored in sessionStorage so it persists across page refreshes within the same browser session.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Trip data entry form with Date, Order ID, Extra Charge, Remarks, Amount, Total (auto-calculated)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Validation: unique Order ID, required Amount, numeric Extra Charge, no empty fields except Remarks, error messages",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Local Storage CRUD: add, edit, delete trip records; auto-load on page refresh; display records in table",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Dashboard with Total Trips, Total Amount, Total Extra Charges, Grand Total, daily/monthly filters, and trip cost trend chart",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "End of Day Report: generate daily report filtered by date, show summary stats, export to Excel (.xlsx) and PDF",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Clean responsive UI with cards, section separation, Indian currency format ₹ #,##,##0",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add 'From' and 'To' fields to the trip data entry form",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Add login page with hardcoded credentials (username: vsat, password: 0558); restrict app access to authenticated users",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Trip Data Manager",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,43 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-create-a-login-page-component-frontend-src-components-login-tsx-that-renders-a-centered-card-with-a-username-field-and-a-password-field-on-submission-validate-that-the-entered-credentials-match-the-hardcoded-values-username-vsat-password-0558-if-credentials-are-correct-mark-the-session-as-authenticated-e-g-via-react-state-or-sessionstorage-and-redirect-to-the-main-app-if-incorrect-display-a-clear-error-message-such-as-invalid-username-or-password",
+      "featureTitle": "Create a login page component (frontend/src/components/Login.tsx) that renders a centered card with a username field and a password field. On submission, validate that the entered credentials match the hardcoded values (username: 'vsat', password: '0558'). If credentials are correct, mark the session as authenticated (e.g., via React state or sessionStorage) and redirect to the main app. If incorrect, display a clear error message such as 'Invalid username or password'.",
+      "files": [
+        "frontend/src/components/Login.tsx",
+        "frontend/src/hooks/useAuth.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-root-app-tsx-to-conditionally-render-the-login-component-when-the-user-is-not-authenticated-and-render-the-full-trip-management-app-header-dashboard-tripform-triptable-dailyreport-footer-only-when-the-user-is-authenticated-authentication-state-must-be-managed-at-the-app-level-and-passed-down-or-stored-in-sessionstorage-so-it-persists-across-page-refreshes-within-the-same-browser-session",
+      "featureTitle": "Update the root App.tsx to conditionally render the Login component when the user is not authenticated, and render the full trip management app (Header, Dashboard, TripForm, TripTable, DailyReport, Footer) only when the user is authenticated. Authentication state must be managed at the App level and passed down or stored in sessionStorage so it persists across page refreshes within the same browser session.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/Header.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    }
+  ]
+}
