@@ -1,11 +1,20 @@
 import { useTripForm } from '../hooks/useTripForm';
+import { useVehicleList } from '../hooks/useVehicleList';
 import type { TripRecord } from '../types/trip';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { formatINR } from '../utils/formatCurrency';
+import { AlertCircle } from 'lucide-react';
 
 interface TripFormProps {
   trips: TripRecord[];
@@ -25,6 +34,8 @@ export default function TripForm({ trips, editingTrip, onSubmit, onCancel }: Tri
     handleSubmit,
     handleCancel,
   } = useTripForm(trips, editingTrip, onSubmit, onCancel);
+
+  const { vehicles } = useVehicleList();
 
   return (
     <Card className="form-card">
@@ -70,6 +81,59 @@ export default function TripForm({ trips, editingTrip, onSubmit, onCancel }: Tri
               />
               {touched.orderId && errors.orderId && (
                 <p className="form-error">{errors.orderId}</p>
+              )}
+            </div>
+
+            {/* Vehicle Number - Dropdown */}
+            <div className="form-field">
+              <Label htmlFor="vehicleNumber" className="form-label">
+                Vehicle Number <span className="text-destructive">*</span>
+              </Label>
+              {vehicles.length === 0 ? (
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-md border border-border bg-muted/30 text-sm text-muted-foreground">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-warning" />
+                    <span>
+                      No vehicles added.{' '}
+                      <span className="text-primary underline underline-offset-2 cursor-pointer hover:text-primary/80">
+                        Go to Vehicles tab
+                      </span>{' '}
+                      to add one.
+                    </span>
+                  </div>
+                  {touched.vehicleNumber && errors.vehicleNumber && (
+                    <p className="form-error">{errors.vehicleNumber}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <Select
+                    value={values.vehicleNumber}
+                    onValueChange={(val) => {
+                      handleChange('vehicleNumber', val);
+                    }}
+                  >
+                    <SelectTrigger
+                      id="vehicleNumber"
+                      className={`form-input w-full ${
+                        touched.vehicleNumber && errors.vehicleNumber ? 'border-destructive' : ''
+                      }`}
+                      onBlur={() => handleBlur('vehicleNumber')}
+                    >
+                      <SelectValue placeholder="Select Vehicle Number" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {vehicles.map((v) => (
+                        <SelectItem key={v} value={v}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {touched.vehicleNumber && errors.vehicleNumber && (
+                    <p className="form-error">{errors.vehicleNumber}</p>
+                  )}
+                </div>
               )}
             </div>
 
@@ -165,7 +229,7 @@ export default function TripForm({ trips, editingTrip, onSubmit, onCancel }: Tri
             </div>
 
             {/* Remarks */}
-            <div className="form-field md:col-span-2 lg:col-span-2">
+            <div className="form-field md:col-span-2 lg:col-span-3">
               <Label htmlFor="remarks" className="form-label">
                 Remarks
               </Label>
@@ -185,16 +249,14 @@ export default function TripForm({ trips, editingTrip, onSubmit, onCancel }: Tri
             <Button type="submit" className="btn-primary">
               {editingTrip ? '💾 Update Trip' : '➕ Add Trip'}
             </Button>
-            {editingTrip && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                className="btn-cancel"
-              >
-                Cancel
-              </Button>
-            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancel}
+              className="btn-cancel"
+            >
+              {editingTrip ? 'Cancel' : '← Back to Dashboard'}
+            </Button>
           </div>
         </form>
       </CardContent>

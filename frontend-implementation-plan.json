@@ -1,52 +1,37 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add login page with hardcoded credentials",
+  "title": "Remove sliding/scrollbar UI element from the app",
   "requirements": [
     {
-      "id": "REQ-12",
-      "summary": "Create a login page component with hardcoded credential validation (username: 'vsat', password: '0558'), session-based authentication state, and error handling for invalid credentials",
+      "id": "REQ-32",
+      "summary": "Remove the sliding bar UI element from the app interface without breaking layout or navigation",
       "acceptanceCriteria": [
-        "A login page is shown when the user is not authenticated, blocking access to the main app.",
-        "The login form has a username input and a password input.",
-        "Submitting with username 'vsat' and password '0558' authenticates the user and shows the main app.",
-        "Submitting with any other credentials displays a visible error message.",
-        "The password field masks input (type='password').",
-        "After successful login, refreshing the page keeps the user logged in for the session (sessionStorage or equivalent).",
-        "A logout button or mechanism is available to return to the login page."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/Login.tsx",
-          "operation": "create",
-          "description": "Create a centered login card component with username and password fields. Validate credentials against hardcoded values (username: 'vsat', password: '0558'). On successful validation, set 'isAuthenticated' in sessionStorage and call an onLoginSuccess callback. Display 'Invalid username or password' error message for incorrect credentials. Use shadcn/ui Card, Input, and Button components for consistent styling with the existing app."
-        },
-        {
-          "path": "frontend/src/hooks/useAuth.ts",
-          "operation": "create",
-          "description": "Create a custom React hook to manage authentication state using sessionStorage. Provide login, logout, and isAuthenticated functions. The login function sets 'isAuthenticated' to 'true' in sessionStorage. The logout function removes the sessionStorage key. Initialize authentication state from sessionStorage on mount to persist login across page refreshes within the same session."
-        }
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "summary": "Update App.tsx to conditionally render Login component for unauthenticated users and the full trip management interface for authenticated users, with logout functionality",
-      "acceptanceCriteria": [
-        "Unauthenticated users see only the login page; no trip data or navigation is visible.",
-        "Authenticated users see the full app immediately without being redirected to login.",
-        "Closing and reopening the browser tab within the same session keeps the user logged in.",
-        "Opening a new browser session (new tab after clearing session) requires re-login."
+        "The sliding bar element is no longer visible anywhere in the app",
+        "All four navigation views (Dashboard, Create Trip, Reports, Vehicles) render correctly without the sliding bar",
+        "The overall layout and spacing are not broken after removal",
+        "No console errors related to the removed element"
       ],
       "file_operations": [
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Import and use the useAuth hook to check authentication state. Conditionally render the Login component when the user is not authenticated. When authenticated, render the existing app structure (Header, Dashboard, TripForm, TripTable, DailyReport, Footer). Pass the login callback from useAuth to the Login component. Ensure all existing trip management functionality remains intact for authenticated users."
+          "description": "Inspect the App component for any sliding bar, progress bar, scroll indicator, or similar UI element in the render output or layout wrapper. Remove the element and any associated state or props while preserving the existing navigation structure and page routing logic."
         },
         {
           "path": "frontend/src/components/Header.tsx",
           "operation": "modify",
-          "description": "Add a logout button to the Header component that calls the logout function from useAuth and clears the session. Position the logout button in the top-right corner of the header. Style it consistently with the existing navigation links using the same color tokens and hover states."
+          "description": "Check the Header component for any sliding or animated UI elements (e.g., progress indicators, animated underlines on tabs, scroll bars). Remove any such element while keeping the navigation tab bar and logout button functional."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Review global styles for any CSS rules that create or style a sliding bar, progress bar, or scroll indicator (e.g., custom scrollbar styles, progress animations, sliding transitions). Remove or disable these styles without affecting the theme color tokens or layout utilities."
+        },
+        {
+          "path": "frontend/index.css",
+          "operation": "modify",
+          "description": "Check the global Tailwind CSS stylesheet for any custom CSS that implements a sliding bar or scroll indicator. Remove any such styles while preserving the theme custom properties and color tokens."
         }
       ]
     }

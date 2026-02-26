@@ -4,6 +4,7 @@ import type { TripRecord, TripFormValues, TripFormErrors } from '../types/trip';
 const defaultValues: TripFormValues = {
   date: new Date().toISOString().split('T')[0],
   orderId: '',
+  vehicleNumber: '',
   from: '',
   to: '',
   extraCharge: '0',
@@ -31,6 +32,7 @@ export function useTripForm(
       setValues({
         date: editingTrip.date,
         orderId: editingTrip.orderId,
+        vehicleNumber: editingTrip.vehicleNumber ?? '',
         from: editingTrip.from ?? '',
         to: editingTrip.to ?? '',
         extraCharge: String(editingTrip.extraCharge),
@@ -70,6 +72,10 @@ export function useTripForm(
       if (duplicate) {
         errs.orderId = `Order ID "${values.orderId.trim()}" already exists`;
       }
+    }
+
+    if (!values.vehicleNumber.trim()) {
+      errs.vehicleNumber = 'Vehicle Number is required';
     }
 
     if (!values.from.trim()) {
@@ -117,7 +123,15 @@ export function useTripForm(
       e.preventDefault();
       const errs = validate();
       setErrors(errs);
-      setTouched({ date: true, orderId: true, from: true, to: true, extraCharge: true, amount: true });
+      setTouched({
+        date: true,
+        orderId: true,
+        vehicleNumber: true,
+        from: true,
+        to: true,
+        extraCharge: true,
+        amount: true,
+      });
 
       if (Object.keys(errs).length > 0) return;
 
@@ -125,6 +139,7 @@ export function useTripForm(
         id: editingTrip?.id ?? generateId(),
         date: values.date,
         orderId: values.orderId.trim(),
+        vehicleNumber: values.vehicleNumber.trim(),
         from: values.from.trim(),
         to: values.to.trim(),
         extraCharge: parseFloat(values.extraCharge) || 0,

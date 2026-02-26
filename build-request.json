@@ -1,63 +1,37 @@
 {
   "kind": "build_request",
-  "title": "Add login page with hardcoded credentials",
+  "title": "Remove sliding/scrollbar UI element from the app",
   "projectName": "Trip Data Manager",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-12",
-      "text": "Create a login page component (frontend/src/components/Login.tsx) that renders a centered card with a username field and a password field. On submission, validate that the entered credentials match the hardcoded values (username: 'vsat', password: '0558'). If credentials are correct, mark the session as authenticated (e.g., via React state or sessionStorage) and redirect to the main app. If incorrect, display a clear error message such as 'Invalid username or password'.",
+      "id": "REQ-32",
+      "text": "Remove the sliding bar (progress bar, scroll indicator, or any sliding UI element) that appears in the app interface. Ensure its removal does not break the layout or navigation of any existing views (Dashboard, Create Trip, Reports, Vehicles).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-7"
         ],
         "quotes": [
-          "add login page user name - vsat",
-          "password - 0558"
+          "please remove the sliding bar"
         ]
       },
       "acceptanceCriteria": [
-        "A login page is shown when the user is not authenticated, blocking access to the main app.",
-        "The login form has a username input and a password input.",
-        "Submitting with username 'vsat' and password '0558' authenticates the user and shows the main app.",
-        "Submitting with any other credentials displays a visible error message.",
-        "The password field masks input (type='password').",
-        "After successful login, refreshing the page keeps the user logged in for the session (sessionStorage or equivalent).",
-        "A logout button or mechanism is available to return to the login page."
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "text": "Update the root App.tsx to conditionally render the Login component when the user is not authenticated, and render the full trip management app (Header, Dashboard, TripForm, TripTable, DailyReport, Footer) only when the user is authenticated. Authentication state must be managed at the App level and passed down or stored in sessionStorage so it persists across page refreshes within the same browser session.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-1"
-        ],
-        "quotes": [
-          "add login page user name - vsat",
-          "password - 0558"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Unauthenticated users see only the login page; no trip data or navigation is visible.",
-        "Authenticated users see the full app immediately without being redirected to login.",
-        "Closing and reopening the browser tab within the same session keeps the user logged in.",
-        "Opening a new browser session (new tab after clearing session) requires re-login."
+        "The sliding bar element is no longer visible anywhere in the app",
+        "All four navigation views (Dashboard, Create Trip, Reports, Vehicles) render correctly without the sliding bar",
+        "The overall layout and spacing are not broken after removal",
+        "No console errors related to the removed element"
       ]
     }
   ],
   "constraints": [
-    "Credentials must be hardcoded on the frontend (username: 'vsat', password: '0558'). No backend authentication is required.",
-    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
-    "Use sessionStorage (not localStorage) to persist login state so it clears when the browser session ends."
+    "Do not modify any files listed under frontend.immutablePaths",
+    "Do not change any existing navigation logic or multi-page layout behavior"
   ],
   "nonGoals": [
-    "No backend authentication or session management.",
-    "No multi-user support or user registration.",
-    "No password hashing or encryption.",
-    "No integration with Internet Identity for this login flow."
+    "Adding or modifying any navigation tabs or links",
+    "Adding User Management functionality (separate request)",
+    "Changing the authentication flow"
   ],
   "imageRequirements": {
     "required": [],

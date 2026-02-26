@@ -1,13 +1,15 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 7,
-  "summary": "Trip Data Entry & Management App with form, local storage, dashboard, daily/monthly reports, Excel/PDF export, Indian currency format (₹), and a login page (username: vsat, password: 0558).",
+  "projectStateVersion": 17,
+  "summary": "Trip Data Entry & Management App with form, local storage, dashboard, daily/monthly reports, Excel/PDF export, Indian currency format (₹), login page (username: vsat, password: 0558), vehicle management, and a navigation bar with multi-page/view layout (Dashboard, Create Trip, Reports, Vehicles).",
   "architectural_notes": [
     "All trip data stored in browser Local Storage; no backend required.",
     "Total field = Amount + Extra Charge, calculated client-side instantly on input.",
     "Indian currency format: ₹ #,##,##0 (e.g., ₹1,00,000).",
     "Export requires third-party libraries: SheetJS for Excel, jsPDF for PDF.",
-    "Login page uses hardcoded credentials (username: vsat, password: 0558); session stored client-side (e.g., sessionStorage)."
+    "Login page uses hardcoded credentials (username: vsat, password: 0558); session stored client-side (e.g., sessionStorage).",
+    "Vehicle numbers stored separately in localStorage; trip form uses a dropdown populated from this list.",
+    "App uses a navigation bar with distinct views (Dashboard, Create Trip, Reports, Vehicles) instead of a single scrollable page."
   ],
   "known_issues": [],
   "isFixRequest": false,
@@ -115,6 +117,158 @@
         "REQ-13"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-extend-the-triprecord-tripformvalues-and-tripformerrors-typescript-types-in-frontend-src-types-trip-ts-to-include-a-vehiclenumber-string-field-update-the-usetripdata-hook-to-persist-and-read-this-field-in-localstorage-defaulting-to-empty-string-for-existing-records-that-lack-it-update-the-usetripform-hook-to-include-vehiclenumber-in-form-state-validation-required-must-not-be-empty-and-submission-logic",
+      "title": "Extend the TripRecord, TripFormValues, and TripFormErrors TypeScript types in frontend/src/types/trip.ts to include a 'vehicleNumber' string field. Update the useTripData hook to persist and read this field in localStorage, defaulting to empty string for existing records that lack it. Update the useTripForm hook to include 'vehicleNumber' in form state, validation (required, must not be empty), and submission logic.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-vehicle-number-text-input-field-to-the-trip-data-entry-form-in-frontend-src-components-tripform-tsx-the-field-must-be-required-place-it-between-the-order-id-field-and-the-from-to-location-fields-display-a-clear-field-level-error-message-when-the-field-is-left-blank",
+      "title": "Add a 'Vehicle Number' text input field to the trip data entry form in frontend/src/components/TripForm.tsx. The field must be required. Place it between the Order ID field and the From/To location fields. Display a clear field-level error message when the field is left blank.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-vehicle-number-column-to-the-trip-records-data-table-in-frontend-src-components-triptable-tsx-displaying-the-vehicle-number-for-each-trip-record-position-the-column-after-order-id-and-before-from-ensure-the-table-remains-readable-on-mobile-with-horizontal-scroll",
+      "title": "Add a 'Vehicle Number' column to the trip records data table in frontend/src/components/TripTable.tsx, displaying the vehicle number for each trip record. Position the column after Order ID and before From. Ensure the table remains readable on mobile with horizontal scroll.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-excel-and-pdf-export-utilities-in-frontend-src-utils-exportutils-ts-to-include-the-vehicle-number-field-in-the-exported-report-data-for-both-the-daily-report-excel-xlsx-csv-and-pdf-exports",
+      "title": "Update the Excel and PDF export utilities in frontend/src/utils/exportUtils.ts to include the 'Vehicle Number' field in the exported report data for both the daily report Excel (.xlsx / CSV) and PDF exports.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-custom-date-range-report-section-in-frontend-src-components-e-g-daterangereport-tsx-the-section-must-include-a-from-date-date-picker-a-to-date-date-picker-and-a-generate-report-button-when-the-button-is-clicked-validate-that-both-dates-are-selected-and-that-the-from-date-is-not-after-the-to-date-display-a-clear-error-message-if-validation-fails",
+      "title": "Create a new 'Custom Date Range Report' section in frontend/src/components (e.g., DateRangeReport.tsx). The section must include a 'From Date' date picker, a 'To Date' date picker, and a 'Generate Report' button. When the button is clicked, validate that both dates are selected and that the From Date is not after the To Date; display a clear error message if validation fails.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-the-user-generates-a-custom-date-range-report-filter-all-trip-records-from-localstorage-whose-date-falls-on-or-between-the-selected-from-date-and-to-date-inclusive-display-a-summary-stats-row-showing-number-of-trips-total-amount-total-extra-charges-and-grand-total-using-indian-currency-format-0-display-the-matching-trip-records-in-a-read-only-table-with-columns-date-order-id-vehicle-number-from-to-amount-extra-charge-remarks-and-total",
+      "title": "When the user generates a custom date range report, filter all trip records from localStorage whose date falls on or between the selected From Date and To Date (inclusive). Display a summary stats row showing: Number of Trips, Total Amount, Total Extra Charges, and Grand Total using Indian currency format (₹ #,##,##0). Display the matching trip records in a read-only table with columns: Date, Order ID, Vehicle Number, From, To, Amount, Extra Charge, Remarks, and Total.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-two-export-buttons-to-the-custom-date-range-report-section-download-excel-xlsx-and-download-pdf-both-exports-must-use-the-existing-export-utility-patterns-in-frontend-src-utils-exportutils-ts-and-must-include-all-columns-date-order-id-vehicle-number-from-to-amount-extra-charge-remarks-total-plus-a-summary-row-number-of-trips-total-amount-total-extra-charges-grand-total-for-the-filtered-date-range-the-exported-file-name-should-reflect-the-selected-date-range-e-g-trip-report-2024-01-01-to-2024-01-31",
+      "title": "Add two export buttons to the Custom Date Range Report section: 'Download Excel (.xlsx)' and 'Download PDF'. Both exports must use the existing export utility patterns in frontend/src/utils/exportUtils.ts and must include all columns (Date, Order ID, Vehicle Number, From, To, Amount, Extra Charge, Remarks, Total) plus a summary row (Number of Trips, Total Amount, Total Extra Charges, Grand Total) for the filtered date range. The exported file name should reflect the selected date range (e.g., 'trip-report-2024-01-01-to-2024-01-31').",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-daterangereport-component-into-the-main-authenticated-app-layout-in-frontend-src-app-tsx-render-it-below-the-existing-dailyreport-section-pass-the-trips-data-from-the-shared-trip-state-so-the-component-can-filter-records-without-duplicating-data-fetching",
+      "title": "Integrate the DateRangeReport component into the main authenticated app layout in frontend/src/App.tsx. Render it below the existing DailyReport section. Pass the trips data from the shared trip state so the component can filter records without duplicating data fetching.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-vehicle-management-page-component-at-frontend-src-components-vehiclemanagement-tsx-the-page-must-display-a-form-with-a-single-vehicle-number-text-input-required-must-not-be-empty-and-an-add-vehicle-button-on-submission-validate-that-the-vehicle-number-is-not-empty-and-not-a-duplicate-of-an-existing-entry-display-a-clear-field-level-error-message-if-validation-fails-persist-the-list-of-vehicle-numbers-to-localstorage-under-a-dedicated-key-e-g-vehiclelist-display-all-saved-vehicle-numbers-in-a-list-table-with-a-delete-button-per-entry-that-removes-the-vehicle-after-confirmation",
+      "title": "Create a new 'Vehicle Management' page component at frontend/src/components/VehicleManagement.tsx. The page must display a form with a single 'Vehicle Number' text input (required, must not be empty) and an 'Add Vehicle' button. On submission, validate that the vehicle number is not empty and not a duplicate of an existing entry. Display a clear field-level error message if validation fails. Persist the list of vehicle numbers to localStorage under a dedicated key (e.g., 'vehicleList'). Display all saved vehicle numbers in a list/table with a 'Delete' button per entry that removes the vehicle after confirmation.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-custom-react-hook-frontend-src-hooks-usevehiclelist-ts-that-reads-and-writes-the-vehicle-number-list-from-to-localstorage-key-vehiclelist-expose-addvehicle-deletevehicle-and-vehicles-string-from-the-hook-on-initial-load-default-to-an-empty-array-if-no-data-exists",
+      "title": "Create a custom React hook frontend/src/hooks/useVehicleList.ts that reads and writes the vehicle number list from/to localStorage (key: 'vehicleList'). Expose addVehicle, deleteVehicle, and vehicles (string[]) from the hook. On initial load, default to an empty array if no data exists.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-free-text-vehicle-number-input-in-frontend-src-components-tripform-tsx-with-a-dropdown-select-element-populated-from-the-vehicle-list-stored-in-localstorage-via-the-usevehiclelist-hook-the-dropdown-must-show-a-placeholder-option-select-vehicle-number-when-no-vehicle-is-selected-validation-remains-required-the-user-must-select-a-vehicle-before-submitting-if-the-vehicle-list-is-empty-display-a-helper-message-such-as-no-vehicles-available-please-add-vehicles-in-the-vehicle-management-page-display-a-clear-field-level-error-message-when-no-vehicle-is-selected-on-form-submission",
+      "title": "Replace the free-text 'Vehicle Number' input in frontend/src/components/TripForm.tsx with a dropdown (select element) populated from the vehicle list stored in localStorage via the useVehicleList hook. The dropdown must show a placeholder option ('Select Vehicle Number') when no vehicle is selected. Validation remains required: the user must select a vehicle before submitting. If the vehicle list is empty, display a helper message such as 'No vehicles available. Please add vehicles in the Vehicle Management page.' Display a clear field-level error message when no vehicle is selected on form submission.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-integrate-the-vehiclemanagement-component-into-the-authenticated-app-layout-in-frontend-src-app-tsx-add-a-navigation-link-or-tab-in-the-header-frontend-src-components-header-tsx-labeled-vehicles-that-navigates-to-or-scrolls-to-the-vehicle-management-section-render-the-vehiclemanagement-section-in-the-page-clearly-separated-from-the-trip-entry-and-reporting-sections-with-a-visible-heading",
+      "title": "Integrate the VehicleManagement component into the authenticated app layout in frontend/src/App.tsx. Add a navigation link or tab in the Header (frontend/src/components/Header.tsx) labeled 'Vehicles' that navigates to or scrolls to the Vehicle Management section. Render the VehicleManagement section in the page, clearly separated from the trip entry and reporting sections with a visible heading.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-refactor-frontend-src-app-tsx-to-implement-a-multi-page-navigation-layout-with-four-views-dashboard-create-trip-reports-and-vehicles-use-a-react-state-variable-e-g-activepage-to-track-the-current-view-the-authenticated-app-must-render-only-the-active-view-s-content-rather-than-a-single-long-scrolling-page",
+      "title": "Refactor frontend/src/App.tsx to implement a multi-page navigation layout with four views: 'Dashboard', 'Create Trip', 'Reports', and 'Vehicles'. Use a React state variable (e.g., activePage) to track the current view. The authenticated app must render only the active view's content rather than a single long scrolling page.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-redesign-the-header-component-frontend-src-components-header-tsx-to-display-a-persistent-navigation-bar-with-four-labeled-tabs-links-dashboard-create-trip-reports-and-vehicles-the-active-tab-must-be-visually-highlighted-clicking-each-tab-updates-the-active-view-in-app-tsx-pass-a-setactivepage-callback-or-lift-state-the-header-must-also-retain-the-app-branding-and-the-logout-button",
+      "title": "Redesign the Header component (frontend/src/components/Header.tsx) to display a persistent navigation bar with four labeled tabs/links: 'Dashboard', 'Create Trip', 'Reports', and 'Vehicles'. The active tab must be visually highlighted. Clicking each tab updates the active view in App.tsx (pass a setActivePage callback or lift state). The header must also retain the app branding and the logout button.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-dashboard-view-as-the-default-landing-page-after-login-it-must-display-the-dashboard-component-summary-stat-cards-filters-and-chart-along-with-the-triptable-component-showing-all-trip-records-this-view-replaces-the-former-top-level-dashboard-table-scroll-section",
+      "title": "Implement the 'Dashboard' view as the default landing page after login. It must display the Dashboard component (summary stat cards, filters, and chart) along with the TripTable component showing all trip records. This view replaces the former top-level dashboard + table scroll section.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-create-trip-view-that-renders-only-the-tripform-component-when-the-user-clicks-create-trip-in-the-navigation-bar-or-is-redirected-there-from-an-edit-action-this-view-opens-after-a-successful-form-submission-add-or-edit-automatically-navigate-back-to-the-dashboard-view",
+      "title": "Implement the 'Create Trip' view that renders only the TripForm component. When the user clicks 'Create Trip' in the navigation bar (or is redirected there from an edit action), this view opens. After a successful form submission (add or edit), automatically navigate back to the 'Dashboard' view.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-reports-view-that-renders-the-dailyreport-component-and-the-daterangereport-component-stacked-vertically-this-consolidates-all-reporting-functionality-into-a-single-dedicated-view",
+      "title": "Implement the 'Reports' view that renders the DailyReport component and the DateRangeReport component stacked vertically. This consolidates all reporting functionality into a single dedicated view.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-vehicles-view-that-renders-only-the-vehiclemanagement-component-this-replaces-the-former-in-page-vehicle-management-scroll-section",
+      "title": "Implement the 'Vehicles' view that renders only the VehicleManagement component. This replaces the former in-page Vehicle Management scroll section.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-sliding-bar-progress-bar-scroll-indicator-or-any-sliding-ui-element-that-appears-in-the-app-interface-ensure-its-removal-does-not-break-the-layout-or-navigation-of-any-existing-views-dashboard-create-trip-reports-vehicles",
+      "title": "Remove the sliding bar (progress bar, scroll indicator, or any sliding UI element) that appears in the app interface. Ensure its removal does not break the layout or navigation of any existing views (Dashboard, Create Trip, Reports, Vehicles).",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -163,6 +317,30 @@
     {
       "id": "AR-8",
       "summary": "Add login page with hardcoded credentials (username: vsat, password: 0558); restrict app access to authenticated users",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add 'Vehicle Number' field to the trip data entry form, table, and exports",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add custom date range report: user selects start and end dates, filters trip records, shows summary stats, and exports to Excel and PDF",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add a Vehicle Management page where users can add/manage vehicle numbers; vehicle number field in trip form becomes a dropdown populated from this list",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Add a navigation bar with multiple views/pages: Dashboard (shows summary details), Create Trip (opens trip entry form), Reports, and Vehicles — replacing the single-page scroll layout",
       "reqIds": [],
       "status": "pending"
     }

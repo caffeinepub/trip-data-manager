@@ -39,7 +39,8 @@ export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
       t.remarks.toLowerCase().includes(search.toLowerCase()) ||
       t.date.includes(search) ||
       (t.from ?? '').toLowerCase().includes(search.toLowerCase()) ||
-      (t.to ?? '').toLowerCase().includes(search.toLowerCase())
+      (t.to ?? '').toLowerCase().includes(search.toLowerCase()) ||
+      (t.vehicleNumber ?? '').toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -54,7 +55,7 @@ export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
               </span>
             </CardTitle>
             <Input
-              placeholder="Search by Order ID, date, from, to, remarks..."
+              placeholder="Search by Order ID, vehicle, date, from, to, remarks..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-8 text-sm w-full sm:w-72"
@@ -79,6 +80,7 @@ export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
                   <TableRow className="table-header-row">
                     <TableHead className="table-head">Date</TableHead>
                     <TableHead className="table-head">Order ID</TableHead>
+                    <TableHead className="table-head">Vehicle No.</TableHead>
                     <TableHead className="table-head">From</TableHead>
                     <TableHead className="table-head">To</TableHead>
                     <TableHead className="table-head text-right">Extra Charge</TableHead>
@@ -89,52 +91,57 @@ export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filtered.map((trip, idx) => (
+                  {filtered.map((trip, index) => (
                     <TableRow
                       key={trip.id}
-                      className={`table-row ${idx % 2 === 0 ? 'table-row-even' : 'table-row-odd'}`}
+                      className={index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
                     >
                       <TableCell className="table-cell font-medium whitespace-nowrap">
                         {formatDate(trip.date)}
                       </TableCell>
-                      <TableCell className="table-cell">
-                        <span className="order-id-badge">{trip.orderId}</span>
+                      <TableCell className="table-cell font-mono text-xs whitespace-nowrap">
+                        {trip.orderId}
                       </TableCell>
-                      <TableCell className="table-cell max-w-[120px] truncate">
+                      <TableCell className="table-cell font-mono text-xs whitespace-nowrap">
+                        {trip.vehicleNumber || '—'}
+                      </TableCell>
+                      <TableCell className="table-cell whitespace-nowrap">
                         {trip.from || '—'}
                       </TableCell>
-                      <TableCell className="table-cell max-w-[120px] truncate">
+                      <TableCell className="table-cell whitespace-nowrap">
                         {trip.to || '—'}
                       </TableCell>
-                      <TableCell className="table-cell text-right">
-                        {formatINR(trip.extraCharge)}
+                      <TableCell className="table-cell text-right whitespace-nowrap">
+                        {trip.extraCharge > 0 ? formatINR(trip.extraCharge) : '—'}
                       </TableCell>
-                      <TableCell className="table-cell text-muted-foreground max-w-[140px] truncate">
+                      <TableCell className="table-cell max-w-[160px] truncate">
                         {trip.remarks || '—'}
                       </TableCell>
-                      <TableCell className="table-cell text-right font-medium">
+                      <TableCell className="table-cell text-right whitespace-nowrap font-medium">
                         {formatINR(trip.amount)}
                       </TableCell>
-                      <TableCell className="table-cell text-right">
-                        <span className="total-badge">{formatINR(trip.total)}</span>
+                      <TableCell className="table-cell text-right whitespace-nowrap font-semibold text-primary">
+                        {formatINR(trip.total)}
                       </TableCell>
                       <TableCell className="table-cell text-center">
                         <div className="flex items-center justify-center gap-1">
                           <Button
                             size="sm"
-                            variant="outline"
+                            variant="ghost"
                             onClick={() => onEdit(trip)}
-                            className="action-btn-edit h-7 px-2 text-xs"
+                            className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+                            title="Edit"
                           >
-                            ✏️ Edit
+                            ✏️
                           </Button>
                           <Button
                             size="sm"
-                            variant="outline"
+                            variant="ghost"
                             onClick={() => setDeleteTarget(trip)}
-                            className="action-btn-delete h-7 px-2 text-xs"
+                            className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                            title="Delete"
                           >
-                            🗑️ Delete
+                            🗑️
                           </Button>
                         </div>
                       </TableCell>
@@ -151,14 +158,10 @@ export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
       <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Trip Record?</AlertDialogTitle>
+            <AlertDialogTitle>Delete Trip Record</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the trip record for Order ID{' '}
-              <strong>{deleteTarget?.orderId}</strong>
-              {deleteTarget?.from && deleteTarget?.to
-                ? ` (${deleteTarget.from} → ${deleteTarget.to})`
-                : ''}
-              . This action cannot be undone.
+              Are you sure you want to delete the trip record for Order ID{' '}
+              <strong>{deleteTarget?.orderId}</strong>? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

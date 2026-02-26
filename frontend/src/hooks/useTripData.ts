@@ -8,11 +8,12 @@ function loadFromStorage(): TripRecord[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const records = JSON.parse(raw) as TripRecord[];
-    // Backward compatibility: default missing from/to to empty strings
+    // Backward compatibility: default missing fields to empty strings
     return records.map((r) => ({
       ...r,
       from: r.from ?? '',
       to: r.to ?? '',
+      vehicleNumber: r.vehicleNumber ?? '',
     }));
   } catch {
     return [];
