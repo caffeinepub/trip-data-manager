@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { TripRecord } from '../types/trip';
+import type { TripRecord, TripStatus } from '../types/trip';
 
 const STORAGE_KEY = 'trip_records';
 
@@ -8,12 +8,13 @@ function loadFromStorage(): TripRecord[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const records = JSON.parse(raw) as TripRecord[];
-    // Backward compatibility: default missing fields to empty strings
+    // Backward compatibility: default missing fields
     return records.map((r) => ({
       ...r,
       from: r.from ?? '',
       to: r.to ?? '',
       vehicleNumber: r.vehicleNumber ?? '',
+      status: r.status ?? 'Pending',
     }));
   } catch {
     return [];
@@ -51,5 +52,11 @@ export function useTripData() {
     setTrips((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  return { trips, addTrip, updateTrip, deleteTrip };
+  const updateTripStatus = useCallback((id: string, status: TripStatus) => {
+    setTrips((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, status } : t))
+    );
+  }, []);
+
+  return { trips, addTrip, updateTrip, deleteTrip, updateTripStatus };
 }

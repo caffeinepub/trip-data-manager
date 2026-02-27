@@ -147,6 +147,7 @@ export function useTripForm(
         amount: parseFloat(values.amount),
         total,
         createdAt: editingTrip?.createdAt ?? Date.now(),
+        status: editingTrip?.status ?? 'Pending',
       };
 
       onSubmit(trip);

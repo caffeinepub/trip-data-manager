@@ -46,6 +46,15 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
     [filteredTrips]
   );
 
+  const statusCounts = useMemo(
+    () => ({
+      pending: filteredTrips.filter((t) => t.status === 'Pending').length,
+      completed: filteredTrips.filter((t) => t.status === 'Complete').length,
+      cancelled: filteredTrips.filter((t) => t.status === 'Cancel').length,
+    }),
+    [filteredTrips]
+  );
+
   const validate = (): boolean => {
     const newErrors: ValidationErrors = {};
     if (!fromDate) {
@@ -100,10 +109,10 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
         <CardTitle className="text-base font-semibold">Custom Date Range Report</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        {/* Date Range Selector */}
+        {/* Date Range Selector + Generate */}
         <div className="flex flex-wrap items-end gap-4">
-          <div className="flex flex-col gap-1.5">
-            <Label className="text-sm font-medium">From Date</Label>
+          <div>
+            <Label className="text-sm font-medium mb-1.5 block">From Date</Label>
             <Input
               type="date"
               value={fromDate}
@@ -111,12 +120,11 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
               className="w-44"
             />
             {errors.fromDate && (
-              <p className="form-error">{errors.fromDate}</p>
+              <p className="text-xs text-destructive mt-1">{errors.fromDate}</p>
             )}
           </div>
-
-          <div className="flex flex-col gap-1.5">
-            <Label className="text-sm font-medium">To Date</Label>
+          <div>
+            <Label className="text-sm font-medium mb-1.5 block">To Date</Label>
             <Input
               type="date"
               value={toDate}
@@ -124,10 +132,9 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
               className="w-44"
             />
             {errors.toDate && (
-              <p className="form-error">{errors.toDate}</p>
+              <p className="text-xs text-destructive mt-1">{errors.toDate}</p>
             )}
           </div>
-
           <Button onClick={handleGenerate} className="btn-primary">
             📋 Generate Report
           </Button>
@@ -143,7 +150,7 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
               </h3>
             </div>
 
-            {/* Summary Stats */}
+            {/* Summary Stat Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <ReportStatCard label="Number of Trips" value={String(stats.totalTrips)} icon="🚗" />
               <ReportStatCard label="Total Amount" value={formatINR(stats.totalAmount)} icon="💰" />
@@ -158,6 +165,13 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
                 icon="🏆"
                 highlight
               />
+            </div>
+
+            {/* Status Breakdown */}
+            <div className="grid grid-cols-3 gap-3">
+              <StatusStatCard label="Pending" value={statusCounts.pending} icon="⏳" color="amber" />
+              <StatusStatCard label="Completed" value={statusCounts.completed} icon="✅" color="green" />
+              <StatusStatCard label="Cancelled" value={statusCounts.cancelled} icon="❌" color="red" />
             </div>
 
             {/* Trip Details Table */}
@@ -185,22 +199,20 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
                         className={idx % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
                       >
                         <TableCell className="table-cell text-muted-foreground">{idx + 1}</TableCell>
-                        <TableCell className="table-cell text-xs text-muted-foreground whitespace-nowrap">
-                          {formatDate(trip.date)}
-                        </TableCell>
+                        <TableCell className="table-cell text-xs">{formatDate(trip.date)}</TableCell>
                         <TableCell className="table-cell">
                           <span className="order-id-badge">{trip.orderId}</span>
                         </TableCell>
                         <TableCell className="table-cell font-mono text-xs">
                           {trip.vehicleNumber || '—'}
                         </TableCell>
-                        <TableCell className="table-cell text-xs">{trip.from || '—'}</TableCell>
-                        <TableCell className="table-cell text-xs">{trip.to || '—'}</TableCell>
+                        <TableCell className="table-cell text-xs">{trip.from}</TableCell>
+                        <TableCell className="table-cell text-xs">{trip.to}</TableCell>
                         <TableCell className="table-cell text-right font-medium">
                           {formatINR(trip.amount)}
                         </TableCell>
                         <TableCell className="table-cell text-right">
-                          {trip.extraCharge > 0 ? formatINR(trip.extraCharge) : '—'}
+                          {formatINR(trip.extraCharge)}
                         </TableCell>
                         <TableCell className="table-cell text-muted-foreground text-xs">
                           {trip.remarks || '—'}
@@ -216,7 +228,7 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-muted-foreground border border-dashed border-border rounded-lg">
                 <p className="text-3xl mb-2">📭</p>
-                <p className="text-sm">No records found for the selected date range</p>
+                <p className="text-sm">No trips found for the selected date range.</p>
               </div>
             )}
 
@@ -228,7 +240,7 @@ export default function DateRangeReport({ trips }: DateRangeReportProps) {
                 className="btn-export-excel"
                 disabled={filteredTrips.length === 0}
               >
-                📊 Download Excel (.xlsx)
+                📊 Download Excel (.csv)
               </Button>
               <Button
                 variant="outline"
@@ -259,6 +271,36 @@ function ReportStatCard({ label, value, icon, highlight }: ReportStatCardProps) 
       <span className="text-xl">{icon}</span>
       <p className="report-stat-label">{label}</p>
       <p className="report-stat-value">{value}</p>
+    </div>
+  );
+}
+
+interface StatusStatCardProps {
+  label: string;
+  value: number;
+  icon: string;
+  color: 'amber' | 'green' | 'red';
+}
+
+function StatusStatCard({ label, value, icon, color }: StatusStatCardProps) {
+  const colorStyles = {
+    amber: 'bg-amber-50 border border-amber-200 text-amber-800',
+    green: 'bg-green-50 border border-green-200 text-green-800',
+    red: 'bg-red-50 border border-red-200 text-red-800',
+  };
+  const valueStyles = {
+    amber: 'text-amber-700',
+    green: 'text-green-700',
+    red: 'text-red-700',
+  };
+
+  return (
+    <div className={`rounded-lg px-4 py-3 flex items-center gap-3 ${colorStyles[color]}`}>
+      <span className="text-xl">{icon}</span>
+      <div>
+        <p className="text-xs font-medium uppercase tracking-wide opacity-70">{label}</p>
+        <p className={`text-2xl font-bold ${valueStyles[color]}`}>{value}</p>
+      </div>
     </div>
   );
 }

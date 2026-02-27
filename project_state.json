@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 17,
+  "projectStateVersion": 21,
   "summary": "Trip Data Entry & Management App with form, local storage, dashboard, daily/monthly reports, Excel/PDF export, Indian currency format (₹), login page (username: vsat, password: 0558), vehicle management, and a navigation bar with multi-page/view layout (Dashboard, Create Trip, Reports, Vehicles).",
   "architectural_notes": [
     "All trip data stored in browser Local Storage; no backend required.",
@@ -269,6 +269,38 @@
         "REQ-32"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-extend-the-triprecord-tripformvalues-and-tripformerrors-typescript-types-in-frontend-src-types-trip-ts-to-include-a-status-field-of-type-complete-cancel-pending-defaulting-to-pending-for-new-records-update-the-usetripdata-hook-to-persist-and-read-this-field-in-localstorage-defaulting-to-pending-for-existing-records-that-lack-it-update-the-usetripform-hook-to-include-status-in-form-state-and-submission-logic",
+      "title": "Extend the TripRecord, TripFormValues, and TripFormErrors TypeScript types in frontend/src/types/trip.ts to include a 'status' field of type 'Complete' | 'Cancel' | 'Pending', defaulting to 'Pending' for new records. Update the useTripData hook to persist and read this field in localStorage, defaulting to 'Pending' for existing records that lack it. Update the useTripForm hook to include 'status' in form state and submission logic.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-inline-status-column-to-the-trip-records-data-table-in-frontend-src-components-triptable-tsx-for-each-trip-row-display-three-small-pill-badge-buttons-labeled-complete-cancel-and-pending-the-button-matching-the-current-status-must-be-visually-highlighted-active-clicking-a-different-status-button-immediately-updates-that-trip-s-status-in-localstorage-via-the-usetripdata-update-function-without-requiring-a-separate-save-action-the-table-must-remain-readable-on-mobile-with-horizontal-scroll",
+      "title": "Add an inline Status column to the trip records data table in frontend/src/components/TripTable.tsx. For each trip row, display three small pill/badge buttons labeled 'Complete', 'Cancel', and 'Pending'. The button matching the current status must be visually highlighted/active. Clicking a different status button immediately updates that trip's status in localStorage via the useTripData update function, without requiring a separate save action. The table must remain readable on mobile with horizontal scroll.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-dashboard-component-frontend-src-components-dashboard-tsx-and-the-usedashboardstats-hook-frontend-src-hooks-usedashboardstats-ts-to-compute-and-display-a-status-breakdown-alongside-the-existing-summary-stat-cards-add-three-additional-stat-cards-or-a-grouped-section-showing-pending-trips-count-completed-trips-count-and-cancelled-trips-count-derived-from-the-currently-filtered-trip-data-these-counts-must-respect-the-active-daily-monthly-filter-the-same-way-the-existing-total-trips-stat-does",
+      "title": "Update the Dashboard component (frontend/src/components/Dashboard.tsx) and the useDashboardStats hook (frontend/src/hooks/useDashboardStats.ts) to compute and display a status breakdown alongside the existing summary stat cards. Add three additional stat cards (or a grouped section) showing: 'Pending Trips' (count), 'Completed Trips' (count), and 'Cancelled Trips' (count) — derived from the currently filtered trip data. These counts must respect the active daily/monthly filter the same way the existing Total Trips stat does.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-reports-view-specifically-the-dailyreport-component-frontend-src-components-dailyreport-tsx-and-the-daterangereport-component-frontend-src-components-daterangereport-tsx-to-display-a-status-breakdown-section-whenever-report-results-are-shown-after-the-existing-summary-stats-number-of-trips-total-amount-total-extra-charges-grand-total-add-three-clearly-labelled-stat-items-pending-count-completed-count-and-cancelled-count-computed-from-the-filtered-trip-records-for-the-selected-date-or-date-range",
+      "title": "Update the Reports view — specifically the DailyReport component (frontend/src/components/DailyReport.tsx) and the DateRangeReport component (frontend/src/components/DateRangeReport.tsx) — to display a status breakdown section whenever report results are shown. After the existing summary stats (Number of Trips, Total Amount, Total Extra Charges, Grand Total), add three clearly labelled stat items: 'Pending' (count), 'Completed' (count), and 'Cancelled' (count), computed from the filtered trip records for the selected date or date range.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -341,6 +373,18 @@
     {
       "id": "AR-12",
       "summary": "Add a navigation bar with multiple views/pages: Dashboard (shows summary details), Create Trip (opens trip entry form), Reports, and Vehicles — replacing the single-page scroll layout",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add a 'Status' field to each trip record with three values: Complete, Cancel, Pending. Display as small clickable buttons in the trip list table, allowing users to change the status of each trip inline.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "In Reports view, show summary counts/stats broken down by status (Pending, Completed, Cancelled). In Dashboard, also show status breakdown (Pending, Completed, Cancelled) in the summary stats.",
       "reqIds": [],
       "status": "pending"
     }

@@ -12,13 +12,13 @@ import VehicleManagement from './components/VehicleManagement';
 import Login from './components/Login';
 import { useTripData } from './hooks/useTripData';
 import { useAuth } from './hooks/useAuth';
-import type { TripRecord } from './types/trip';
+import type { TripRecord, TripStatus } from './types/trip';
 
 export type ActivePage = 'dashboard' | 'create-trip' | 'reports' | 'vehicles';
 
 export default function App() {
   const { isAuthenticated, login, logout } = useAuth();
-  const { trips, addTrip, updateTrip, deleteTrip } = useTripData();
+  const { trips, addTrip, updateTrip, deleteTrip, updateTripStatus } = useTripData();
   const [editingTrip, setEditingTrip] = useState<TripRecord | null>(null);
   const [activePage, setActivePage] = useState<ActivePage>('dashboard');
 
@@ -52,6 +52,13 @@ export default function App() {
     setActivePage(page);
   }, []);
 
+  const handleStatusChange = useCallback(
+    (id: string, status: TripStatus) => {
+      updateTripStatus(id, status);
+    },
+    [updateTripStatus]
+  );
+
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
       {!isAuthenticated ? (
@@ -76,7 +83,12 @@ export default function App() {
                     <h2 className="section-title">📋 Trip Records</h2>
                     <p className="section-subtitle">All recorded trips — edit or delete as needed</p>
                   </div>
-                  <TripTable trips={trips} onEdit={handleEdit} onDelete={deleteTrip} />
+                  <TripTable
+                    trips={trips}
+                    onEdit={handleEdit}
+                    onDelete={deleteTrip}
+                    onStatusChange={handleStatusChange}
+                  />
                 </section>
               </div>
             )}

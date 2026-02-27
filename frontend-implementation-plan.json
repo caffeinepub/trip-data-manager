@@ -1,37 +1,52 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Remove sliding/scrollbar UI element from the app",
+  "title": "Add status breakdown (Pending, Complete, Cancel) to Dashboard stats and Reports view",
   "requirements": [
     {
-      "id": "REQ-32",
-      "summary": "Remove the sliding bar UI element from the app interface without breaking layout or navigation",
+      "id": "REQ-35",
+      "summary": "Add Pending, Completed, and Cancelled trip counts to Dashboard stat cards that respect the active daily/monthly filter",
       "acceptanceCriteria": [
-        "The sliding bar element is no longer visible anywhere in the app",
-        "All four navigation views (Dashboard, Create Trip, Reports, Vehicles) render correctly without the sliding bar",
-        "The overall layout and spacing are not broken after removal",
-        "No console errors related to the removed element"
+        "The Dashboard view displays three additional stat cards or a clearly labelled group: Pending Trips, Completed Trips, and Cancelled Trips.",
+        "Each count reflects only the trips that match the current date/month filter (or all trips when no filter is active).",
+        "The counts update automatically whenever trip data or the active filter changes.",
+        "All existing Dashboard stat cards (Total Trips, Total Amount, Total Extra Charges, Grand Total) and the chart remain unaffected.",
+        "The layout remains responsive on both mobile and desktop."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/hooks/useDashboardStats.ts",
           "operation": "modify",
-          "description": "Inspect the App component for any sliding bar, progress bar, scroll indicator, or similar UI element in the render output or layout wrapper. Remove the element and any associated state or props while preserving the existing navigation structure and page routing logic."
+          "description": "Extend the DashboardStats interface to include statusBreakdown object with pendingCount, completedCount, and cancelledCount properties. Update the useDashboardStats hook to compute these three counts from filteredTrips by checking each trip's status field against 'Pending', 'Complete', and 'Cancel'. Return the statusBreakdown object alongside existing stats so the Dashboard component can consume it."
         },
         {
-          "path": "frontend/src/components/Header.tsx",
+          "path": "frontend/src/components/Dashboard.tsx",
           "operation": "modify",
-          "description": "Check the Header component for any sliding or animated UI elements (e.g., progress indicators, animated underlines on tabs, scroll bars). Remove any such element while keeping the navigation tab bar and logout button functional."
+          "description": "Import and destructure the statusBreakdown object from the useDashboardStats hook result. After the existing four stat cards (Total Trips, Total Amount, Total Extra Charges, Grand Total), add a new grid section or three additional stat Card components displaying Pending Trips, Completed Trips, and Cancelled Trips using the statusBreakdown counts. Ensure the new cards respect the same responsive grid layout and styling (Card, CardHeader, CardTitle, CardContent) used by existing stat cards so the interface remains consistent across mobile and desktop viewports."
+        }
+      ]
+    },
+    {
+      "id": "REQ-36",
+      "summary": "Add Pending, Completed, and Cancelled trip counts to the summary section of both DailyReport and DateRangeReport views",
+      "acceptanceCriteria": [
+        "In DailyReport, after generating a report for a selected date, the summary section shows Pending, Completed, and Cancelled counts alongside existing stats.",
+        "In DateRangeReport, after generating a report for a selected date range, the summary section shows Pending, Completed, and Cancelled counts alongside existing stats.",
+        "The counts are computed from the same filtered trip records used for the other summary stats.",
+        "The status breakdown is not shown before a report is generated (i.e., only visible after the user clicks Generate).",
+        "Existing summary stats and the trip details table in both report components remain unchanged.",
+        "The layout remains responsive on both mobile and desktop."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/DailyReport.tsx",
+          "operation": "modify",
+          "description": "After the report is generated (when filteredTrips is populated), compute three status counts by iterating over filteredTrips and counting records with status 'Pending', 'Complete', and 'Cancel'. In the summary stats table rows (after Number of Trips, Total Amount, Total Extra Charges, Grand Total), add three additional table rows with labels 'Pending:', 'Completed:', and 'Cancelled:' displaying the computed counts. Ensure these rows are only rendered when filteredTrips has data (i.e., after Generate is clicked) and maintain the same table styling and responsive layout as existing summary rows."
         },
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/src/components/DateRangeReport.tsx",
           "operation": "modify",
-          "description": "Review global styles for any CSS rules that create or style a sliding bar, progress bar, or scroll indicator (e.g., custom scrollbar styles, progress animations, sliding transitions). Remove or disable these styles without affecting the theme color tokens or layout utilities."
-        },
-        {
-          "path": "frontend/index.css",
-          "operation": "modify",
-          "description": "Check the global Tailwind CSS stylesheet for any custom CSS that implements a sliding bar or scroll indicator. Remove any such styles while preserving the theme custom properties and color tokens."
+          "description": "After the report is generated (when filteredTrips is populated), compute three status counts by iterating over filteredTrips and counting records with status 'Pending', 'Complete', and 'Cancel'. In the summary stats table rows (after Number of Trips, Total Amount, Total Extra Charges, Grand Total), add three additional table rows with labels 'Pending:', 'Completed:', and 'Cancelled:' displaying the computed counts. Ensure these rows are only rendered when filteredTrips has data (i.e., after Generate is clicked) and maintain the same table styling and responsive layout as existing summary rows."
         }
       ]
     }

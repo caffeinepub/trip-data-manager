@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -11,11 +11,6 @@ import { formatINR, formatMonth } from '../utils/formatCurrency';
 interface DashboardProps {
   trips: TripRecord[];
 }
-
-const MONTHS = [
-  '01', '02', '03', '04', '05', '06',
-  '07', '08', '09', '10', '11', '12',
-];
 
 function getCurrentMonth(): string {
   const now = new Date();
@@ -30,7 +25,7 @@ export default function Dashboard({ trips }: DashboardProps) {
   const effectiveDate = activeFilter === 'daily' ? filterDate : '';
   const effectiveMonth = activeFilter === 'monthly' ? filterMonth : '';
 
-  const { stats, chartData } = useDashboardStats(trips, effectiveDate, effectiveMonth);
+  const { stats, statusBreakdown, chartData } = useDashboardStats(trips, effectiveDate, effectiveMonth);
 
   const handleFilterAll = () => {
     setActiveFilter('all');
@@ -127,7 +122,7 @@ export default function Dashboard({ trips }: DashboardProps) {
         </CardContent>
       </Card>
 
-      {/* Stat Cards */}
+      {/* Main Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon="🚗"
@@ -154,6 +149,28 @@ export default function Dashboard({ trips }: DashboardProps) {
           value={formatINR(stats.grandTotal)}
           color="red"
           highlight
+        />
+      </div>
+
+      {/* Status Breakdown Cards */}
+      <div className="grid grid-cols-3 gap-4">
+        <StatusCard
+          icon="⏳"
+          label="Pending"
+          value={statusBreakdown.pendingCount}
+          color="amber"
+        />
+        <StatusCard
+          icon="✅"
+          label="Completed"
+          value={statusBreakdown.completedCount}
+          color="green"
+        />
+        <StatusCard
+          icon="❌"
+          label="Cancelled"
+          value={statusBreakdown.cancelledCount}
+          color="red"
         />
       </div>
 
@@ -195,6 +212,39 @@ function StatCard({ icon, label, value, color, highlight }: StatCardProps) {
       <CardContent className="px-4 pb-4">
         <p className="stat-label">{label}</p>
         <p className="stat-value">{value}</p>
+      </CardContent>
+    </Card>
+  );
+}
+
+interface StatusCardProps {
+  icon: string;
+  label: string;
+  value: number;
+  color: 'amber' | 'green' | 'red';
+}
+
+function StatusCard({ icon, label, value, color }: StatusCardProps) {
+  const colorStyles = {
+    amber: 'bg-amber-50 border-amber-200 text-amber-800',
+    green: 'bg-green-50 border-green-200 text-green-800',
+    red: 'bg-red-50 border-red-200 text-red-800',
+  };
+
+  const valueStyles = {
+    amber: 'text-amber-700',
+    green: 'text-green-700',
+    red: 'text-red-700',
+  };
+
+  return (
+    <Card className={`border ${colorStyles[color]}`}>
+      <CardContent className="px-4 py-3 flex items-center gap-3">
+        <span className="text-2xl">{icon}</span>
+        <div>
+          <p className={`text-xs font-medium uppercase tracking-wide opacity-70`}>{label}</p>
+          <p className={`text-2xl font-bold ${valueStyles[color]}`}>{value}</p>
+        </div>
       </CardContent>
     </Card>
   );

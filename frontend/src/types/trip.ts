@@ -1,3 +1,5 @@
+export type TripStatus = 'Complete' | 'Cancel' | 'Pending';
+
 export interface TripRecord {
   id: string;
   date: string;        // ISO date string YYYY-MM-DD
@@ -10,6 +12,7 @@ export interface TripRecord {
   amount: number;
   total: number;       // amount + extraCharge
   createdAt: number;   // timestamp for sorting
+  status: TripStatus;  // trip status
 }
 
 export interface TripFormValues {

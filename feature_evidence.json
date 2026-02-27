@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-remove-the-sliding-bar-progress-bar-scroll-indicator-or-any-sliding-ui-element-that-appears-in-the-app-interface-ensure-its-removal-does-not-break-the-layout-or-navigation-of-any-existing-views-dashboard-create-trip-reports-vehicles",
-      "featureTitle": "Remove the sliding bar (progress bar, scroll indicator, or any sliding UI element) that appears in the app interface. Ensure its removal does not break the layout or navigation of any existing views (Dashboard, Create Trip, Reports, Vehicles).",
+      "featureId": "feature-update-the-dashboard-component-frontend-src-components-dashboard-tsx-and-the-usedashboardstats-hook-frontend-src-hooks-usedashboardstats-ts-to-compute-and-display-a-status-breakdown-alongside-the-existing-summary-stat-cards-add-three-additional-stat-cards-or-a-grouped-section-showing-pending-trips-count-completed-trips-count-and-cancelled-trips-count-derived-from-the-currently-filtered-trip-data-these-counts-must-respect-the-active-daily-monthly-filter-the-same-way-the-existing-total-trips-stat-does",
+      "featureTitle": "Update the Dashboard component (frontend/src/components/Dashboard.tsx) and the useDashboardStats hook (frontend/src/hooks/useDashboardStats.ts) to compute and display a status breakdown alongside the existing summary stat cards. Add three additional stat cards (or a grouped section) showing: 'Pending Trips' (count), 'Completed Trips' (count), and 'Cancelled Trips' (count) — derived from the currently filtered trip data. These counts must respect the active daily/monthly filter the same way the existing Total Trips stat does.",
       "files": [
-        "frontend/src/components/Header.tsx"
+        "frontend/src/components/Dashboard.tsx",
+        "frontend/src/hooks/useDashboardStats.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -15,7 +16,26 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-32"
+        "REQ-35"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-reports-view-specifically-the-dailyreport-component-frontend-src-components-dailyreport-tsx-and-the-daterangereport-component-frontend-src-components-daterangereport-tsx-to-display-a-status-breakdown-section-whenever-report-results-are-shown-after-the-existing-summary-stats-number-of-trips-total-amount-total-extra-charges-grand-total-add-three-clearly-labelled-stat-items-pending-count-completed-count-and-cancelled-count-computed-from-the-filtered-trip-records-for-the-selected-date-or-date-range",
+      "featureTitle": "Update the Reports view — specifically the DailyReport component (frontend/src/components/DailyReport.tsx) and the DateRangeReport component (frontend/src/components/DateRangeReport.tsx) — to display a status breakdown section whenever report results are shown. After the existing summary stats (Number of Trips, Total Amount, Total Extra Charges, Grand Total), add three clearly labelled stat items: 'Pending' (count), 'Completed' (count), and 'Cancelled' (count), computed from the filtered trip records for the selected date or date range.",
+      "files": [
+        "frontend/src/components/DailyReport.tsx",
+        "frontend/src/components/DateRangeReport.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-36"
       ],
       "confidence": "high"
     }

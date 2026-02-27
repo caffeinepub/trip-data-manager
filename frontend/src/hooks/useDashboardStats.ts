@@ -1,6 +1,12 @@
 import { useMemo } from 'react';
 import type { TripRecord, DashboardStats } from '../types/trip';
 
+export interface StatusBreakdown {
+  pendingCount: number;
+  completedCount: number;
+  cancelledCount: number;
+}
+
 export function useDashboardStats(
   trips: TripRecord[],
   filterDate: string,
@@ -25,6 +31,14 @@ export function useDashboardStats(
     };
   }, [filteredTrips]);
 
+  const statusBreakdown: StatusBreakdown = useMemo(() => {
+    return {
+      pendingCount: filteredTrips.filter((t) => t.status === 'Pending').length,
+      completedCount: filteredTrips.filter((t) => t.status === 'Complete').length,
+      cancelledCount: filteredTrips.filter((t) => t.status === 'Cancel').length,
+    };
+  }, [filteredTrips]);
+
   // Chart data: aggregate by date
   const chartData = useMemo(() => {
     const map = new Map<string, { date: string; amount: number; extraCharge: number; total: number }>();
@@ -46,5 +60,5 @@ export function useDashboardStats(
     return Array.from(map.values()).sort((a, b) => a.date.localeCompare(b.date));
   }, [filteredTrips]);
 
-  return { stats, filteredTrips, chartData };
+  return { stats, statusBreakdown, filteredTrips, chartData };
 }

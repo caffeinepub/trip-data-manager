@@ -1,27 +1,39 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-26T15:54:18.623Z",
+  "generatedAt": "2026-02-27T11:30:20.205Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-32",
-        "summary": "Remove the sliding bar (progress bar, scroll indicator, or any sliding UI element) that appears in the app interface. Ensure its removal does not break the layout or navigation of any existing views (Dashboard, Create Trip, Reports, Vehicles).",
+        "id": "REQ-35",
+        "summary": "Update the Dashboard component (frontend/src/components/Dashboard.tsx) and the useDashboardStats hook (frontend/src/hooks/useDashboardStats.ts) to compute and display a status breakdown alongside the existing summary stat cards. Add three additional stat cards (or a grouped section) showing: 'Pending Trips' (count), 'Completed Trips' (count), and 'Cancelled Trips' (count) — derived from the currently filtered trip data. These counts must respect the active daily/monthly filter the same way the existing Total Trips stat does.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/Header.tsx",
-          "frontend/src/index.css",
-          "frontend/index.css"
+          "frontend/src/hooks/useDashboardStats.ts",
+          "frontend/src/components/Dashboard.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/Header.tsx"
+          "frontend/src/hooks/useDashboardStats.ts",
+          "frontend/src/components/Dashboard.tsx"
+        ]
+      },
+      {
+        "id": "REQ-36",
+        "summary": "Update the Reports view — specifically the DailyReport component (frontend/src/components/DailyReport.tsx) and the DateRangeReport component (frontend/src/components/DateRangeReport.tsx) — to display a status breakdown section whenever report results are shown. After the existing summary stats (Number of Trips, Total Amount, Total Extra Charges, Grand Total), add three clearly labelled stat items: 'Pending' (count), 'Completed' (count), and 'Cancelled' (count), computed from the filtered trip records for the selected date or date range.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/DailyReport.tsx",
+          "frontend/src/components/DateRangeReport.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/DailyReport.tsx",
+          "frontend/src/components/DateRangeReport.tsx"
         ]
       }
     ]
@@ -31,7 +43,10 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/Header.tsx",
+    "frontend/src/components/DailyReport.tsx",
+    "frontend/src/components/Dashboard.tsx",
+    "frontend/src/components/DateRangeReport.tsx",
+    "frontend/src/hooks/useDashboardStats.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

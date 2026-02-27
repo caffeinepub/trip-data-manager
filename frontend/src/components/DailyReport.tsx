@@ -38,6 +38,15 @@ export default function DailyReport({ trips }: DailyReportProps) {
     [filteredTrips]
   );
 
+  const statusCounts = useMemo(
+    () => ({
+      pending: filteredTrips.filter((t) => t.status === 'Pending').length,
+      completed: filteredTrips.filter((t) => t.status === 'Complete').length,
+      cancelled: filteredTrips.filter((t) => t.status === 'Cancel').length,
+    }),
+    [filteredTrips]
+  );
+
   const handleGenerate = () => {
     setGenerated(true);
   };
@@ -99,6 +108,13 @@ export default function DailyReport({ trips }: DailyReportProps) {
                 icon="🏆"
                 highlight
               />
+            </div>
+
+            {/* Status Breakdown */}
+            <div className="grid grid-cols-3 gap-3">
+              <StatusStatCard label="Pending" value={statusCounts.pending} icon="⏳" color="amber" />
+              <StatusStatCard label="Completed" value={statusCounts.completed} icon="✅" color="green" />
+              <StatusStatCard label="Cancelled" value={statusCounts.cancelled} icon="❌" color="red" />
             </div>
 
             {/* Trip Details Table */}
@@ -189,6 +205,36 @@ function ReportStatCard({ label, value, icon, highlight }: ReportStatCardProps) 
       <span className="text-xl">{icon}</span>
       <p className="report-stat-label">{label}</p>
       <p className="report-stat-value">{value}</p>
+    </div>
+  );
+}
+
+interface StatusStatCardProps {
+  label: string;
+  value: number;
+  icon: string;
+  color: 'amber' | 'green' | 'red';
+}
+
+function StatusStatCard({ label, value, icon, color }: StatusStatCardProps) {
+  const colorStyles = {
+    amber: 'bg-amber-50 border border-amber-200 text-amber-800',
+    green: 'bg-green-50 border border-green-200 text-green-800',
+    red: 'bg-red-50 border border-red-200 text-red-800',
+  };
+  const valueStyles = {
+    amber: 'text-amber-700',
+    green: 'text-green-700',
+    red: 'text-red-700',
+  };
+
+  return (
+    <div className={`rounded-lg px-4 py-3 flex items-center gap-3 ${colorStyles[color]}`}>
+      <span className="text-xl">{icon}</span>
+      <div>
+        <p className="text-xs font-medium uppercase tracking-wide opacity-70">{label}</p>
+        <p className={`text-2xl font-bold ${valueStyles[color]}`}>{value}</p>
+      </div>
     </div>
   );
 }

@@ -20,16 +20,43 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import type { TripRecord } from '../types/trip';
+import type { TripRecord, TripStatus } from '../types/trip';
 import { formatINR, formatDate } from '../utils/formatCurrency';
 
 interface TripTableProps {
   trips: TripRecord[];
   onEdit: (trip: TripRecord) => void;
   onDelete: (id: string) => void;
+  onStatusChange: (id: string, status: TripStatus) => void;
 }
 
-export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
+const STATUS_OPTIONS: { value: TripStatus; label: string }[] = [
+  { value: 'Pending', label: 'Pending' },
+  { value: 'Complete', label: 'Complete' },
+  { value: 'Cancel', label: 'Cancel' },
+];
+
+function getStatusStyles(status: TripStatus, isActive: boolean): string {
+  const base =
+    'h-6 px-2 text-[10px] font-semibold rounded-full border transition-all duration-150 cursor-pointer select-none';
+
+  if (status === 'Complete') {
+    return isActive
+      ? `${base} bg-emerald-500 border-emerald-500 text-white shadow-sm`
+      : `${base} bg-transparent border-emerald-400 text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:border-emerald-500 dark:hover:bg-emerald-950`;
+  }
+  if (status === 'Cancel') {
+    return isActive
+      ? `${base} bg-rose-500 border-rose-500 text-white shadow-sm`
+      : `${base} bg-transparent border-rose-400 text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:border-rose-500 dark:hover:bg-rose-950`;
+  }
+  // Pending
+  return isActive
+    ? `${base} bg-amber-400 border-amber-400 text-white shadow-sm`
+    : `${base} bg-transparent border-amber-400 text-amber-600 hover:bg-amber-50 dark:text-amber-400 dark:border-amber-500 dark:hover:bg-amber-950`;
+}
+
+export default function TripTable({ trips, onEdit, onDelete, onStatusChange }: TripTableProps) {
   const [deleteTarget, setDeleteTarget] = useState<TripRecord | null>(null);
   const [search, setSearch] = useState('');
 
@@ -87,66 +114,88 @@ export default function TripTable({ trips, onEdit, onDelete }: TripTableProps) {
                     <TableHead className="table-head">Remarks</TableHead>
                     <TableHead className="table-head text-right">Amount</TableHead>
                     <TableHead className="table-head text-right">Total</TableHead>
+                    <TableHead className="table-head text-center">Status</TableHead>
                     <TableHead className="table-head text-center">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filtered.map((trip, index) => (
-                    <TableRow
-                      key={trip.id}
-                      className={index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
-                    >
-                      <TableCell className="table-cell font-medium whitespace-nowrap">
-                        {formatDate(trip.date)}
-                      </TableCell>
-                      <TableCell className="table-cell font-mono text-xs whitespace-nowrap">
-                        {trip.orderId}
-                      </TableCell>
-                      <TableCell className="table-cell font-mono text-xs whitespace-nowrap">
-                        {trip.vehicleNumber || '—'}
-                      </TableCell>
-                      <TableCell className="table-cell whitespace-nowrap">
-                        {trip.from || '—'}
-                      </TableCell>
-                      <TableCell className="table-cell whitespace-nowrap">
-                        {trip.to || '—'}
-                      </TableCell>
-                      <TableCell className="table-cell text-right whitespace-nowrap">
-                        {trip.extraCharge > 0 ? formatINR(trip.extraCharge) : '—'}
-                      </TableCell>
-                      <TableCell className="table-cell max-w-[160px] truncate">
-                        {trip.remarks || '—'}
-                      </TableCell>
-                      <TableCell className="table-cell text-right whitespace-nowrap font-medium">
-                        {formatINR(trip.amount)}
-                      </TableCell>
-                      <TableCell className="table-cell text-right whitespace-nowrap font-semibold text-primary">
-                        {formatINR(trip.total)}
-                      </TableCell>
-                      <TableCell className="table-cell text-center">
-                        <div className="flex items-center justify-center gap-1">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => onEdit(trip)}
-                            className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
-                            title="Edit"
-                          >
-                            ✏️
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setDeleteTarget(trip)}
-                            className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-                            title="Delete"
-                          >
-                            🗑️
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {filtered.map((trip, index) => {
+                    const currentStatus: TripStatus = trip.status ?? 'Pending';
+                    return (
+                      <TableRow
+                        key={trip.id}
+                        className={index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
+                      >
+                        <TableCell className="table-cell font-medium whitespace-nowrap">
+                          {formatDate(trip.date)}
+                        </TableCell>
+                        <TableCell className="table-cell font-mono text-xs whitespace-nowrap">
+                          {trip.orderId}
+                        </TableCell>
+                        <TableCell className="table-cell font-mono text-xs whitespace-nowrap">
+                          {trip.vehicleNumber || '—'}
+                        </TableCell>
+                        <TableCell className="table-cell whitespace-nowrap">
+                          {trip.from || '—'}
+                        </TableCell>
+                        <TableCell className="table-cell whitespace-nowrap">
+                          {trip.to || '—'}
+                        </TableCell>
+                        <TableCell className="table-cell text-right whitespace-nowrap">
+                          {trip.extraCharge > 0 ? formatINR(trip.extraCharge) : '—'}
+                        </TableCell>
+                        <TableCell className="table-cell max-w-[160px] truncate">
+                          {trip.remarks || '—'}
+                        </TableCell>
+                        <TableCell className="table-cell text-right whitespace-nowrap font-medium">
+                          {formatINR(trip.amount)}
+                        </TableCell>
+                        <TableCell className="table-cell text-right whitespace-nowrap font-semibold text-primary">
+                          {formatINR(trip.total)}
+                        </TableCell>
+                        <TableCell className="table-cell text-center">
+                          <div className="flex items-center justify-center gap-1 whitespace-nowrap">
+                            {STATUS_OPTIONS.map((opt) => (
+                              <button
+                                key={opt.value}
+                                onClick={() => {
+                                  if (currentStatus !== opt.value) {
+                                    onStatusChange(trip.id, opt.value);
+                                  }
+                                }}
+                                className={getStatusStyles(opt.value, currentStatus === opt.value)}
+                                title={`Set status to ${opt.label}`}
+                              >
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                        </TableCell>
+                        <TableCell className="table-cell text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => onEdit(trip)}
+                              className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
+                              title="Edit"
+                            >
+                              ✏️
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setDeleteTarget(trip)}
+                              className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
+                              title="Delete"
+                            >
+                              🗑️
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

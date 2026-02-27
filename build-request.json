@@ -1,37 +1,61 @@
 {
   "kind": "build_request",
-  "title": "Remove sliding/scrollbar UI element from the app",
-  "projectName": "Trip Data Manager",
+  "title": "Add status breakdown (Pending, Complete, Cancel) to Dashboard stats and Reports view",
+  "projectName": "VSAT Trip Manager",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-32",
-      "text": "Remove the sliding bar (progress bar, scroll indicator, or any sliding UI element) that appears in the app interface. Ensure its removal does not break the layout or navigation of any existing views (Dashboard, Create Trip, Reports, Vehicles).",
+      "id": "REQ-35",
+      "text": "Update the Dashboard component (frontend/src/components/Dashboard.tsx) and the useDashboardStats hook (frontend/src/hooks/useDashboardStats.ts) to compute and display a status breakdown alongside the existing summary stat cards. Add three additional stat cards (or a grouped section) showing: 'Pending Trips' (count), 'Completed Trips' (count), and 'Cancelled Trips' (count) — derived from the currently filtered trip data. These counts must respect the active daily/monthly filter the same way the existing Total Trips stat does.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-7"
+          "msg-4"
         ],
         "quotes": [
-          "please remove the sliding bar"
+          "IN REPORTS SHOW PENDINGS ,COMPLETED ,CANCEL SAME THREE ARE SHOWS IN DASHBOARD DATA ALSO"
         ]
       },
       "acceptanceCriteria": [
-        "The sliding bar element is no longer visible anywhere in the app",
-        "All four navigation views (Dashboard, Create Trip, Reports, Vehicles) render correctly without the sliding bar",
-        "The overall layout and spacing are not broken after removal",
-        "No console errors related to the removed element"
+        "The Dashboard view displays three additional stat cards or a clearly labelled group: Pending Trips, Completed Trips, and Cancelled Trips.",
+        "Each count reflects only the trips that match the current date/month filter (or all trips when no filter is active).",
+        "The counts update automatically whenever trip data or the active filter changes.",
+        "All existing Dashboard stat cards (Total Trips, Total Amount, Total Extra Charges, Grand Total) and the chart remain unaffected.",
+        "The layout remains responsive on both mobile and desktop."
+      ]
+    },
+    {
+      "id": "REQ-36",
+      "text": "Update the Reports view — specifically the DailyReport component (frontend/src/components/DailyReport.tsx) and the DateRangeReport component (frontend/src/components/DateRangeReport.tsx) — to display a status breakdown section whenever report results are shown. After the existing summary stats (Number of Trips, Total Amount, Total Extra Charges, Grand Total), add three clearly labelled stat items: 'Pending' (count), 'Completed' (count), and 'Cancelled' (count), computed from the filtered trip records for the selected date or date range.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "IN REPORTS SHOW PENDINGS ,COMPLETED ,CANCEL SAME THREE ARE SHOWS IN DASHBOARD DATA ALSO"
+        ]
+      },
+      "acceptanceCriteria": [
+        "In DailyReport, after generating a report for a selected date, the summary section shows Pending, Completed, and Cancelled counts alongside existing stats.",
+        "In DateRangeReport, after generating a report for a selected date range, the summary section shows Pending, Completed, and Cancelled counts alongside existing stats.",
+        "The counts are computed from the same filtered trip records used for the other summary stats.",
+        "The status breakdown is not shown before a report is generated (i.e., only visible after the user clicks Generate).",
+        "Existing summary stats and the trip details table in both report components remain unchanged.",
+        "The layout remains responsive on both mobile and desktop."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files listed under frontend.immutablePaths",
-    "Do not change any existing navigation logic or multi-page layout behavior"
+    "Do not modify any files listed under frontend.immutablePaths.",
+    "Do not change the TripStatus type or localStorage schema — the 'status' field already exists on TripRecord.",
+    "Do not alter the existing export (Excel/PDF) output format or columns."
   ],
   "nonGoals": [
-    "Adding or modifying any navigation tabs or links",
-    "Adding User Management functionality (separate request)",
-    "Changing the authentication flow"
+    "Adding status filter controls to the Dashboard or Reports view (not requested).",
+    "Changing the inline status toggle buttons in TripTable.",
+    "Modifying the Create Trip or Vehicles views.",
+    "Backend changes — all data remains in localStorage."
   ],
   "imageRequirements": {
     "required": [],
